@@ -1,33 +1,33 @@
-services:
-  - type: web
-    name: fleetpulse-api
-    runtime: node
-    plan: free
-    
-    # Build
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
-    
-    # Environment
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 5000
-      - key: MONGO_URI
-        scope: secret
-      - key: JWT_SECRET
-        scope: secret
-    
-    # Auto-deploy from GitHub
-    autoDeploy: true
-    
-    # Connect to GitHub
-    repo: your-github-username/fleetpulse
-    branch: main
-    
-    # Healthcheck
-    healthCheckPath: /
-    
-    # Region
-    region: oregon
+  services:
+    - type: web
+      name: fleetpulse-api
+      runtime: node
+      plan: free
+      
+      # Build
+      buildCommand: cd backend && npm install
+      startCommand: cd backend && npm start
+      
+      # Environment
+      envVars:
+        - key: NODE_ENV
+          value: production
+        - key: PORT
+          value: 5000
+        - key: MONGO_URI
+          scope: secret
+        - key: JWT_SECRET
+          scope: secret
+      
+      # Auto-deploy from GitHub
+      autoDeploy: true
+      
+      # Connect to GitHub
+      repo: your-github-username/fleetpulse
+      branch: main
+      
+      # Healthcheck
+      healthCheckPath: /
+      
+      # Region
+      region: oregon
