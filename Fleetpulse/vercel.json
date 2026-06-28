@@ -1,6 +1,0 @@
-{
-  "buildCommand": "cd backend && npm install",
-  "outputDirectory": "backend",
-  "framework": "express",
-  "env": "nodejs"
-}
