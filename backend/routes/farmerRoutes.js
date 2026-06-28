@@ -1,0 +1,61 @@
+const express = require('express');
+const router = express.Router();
+const Farmer = require('../models/Farmer'); 
+
+router.post('/add', async (req, res) => {
+  try {
+
+    console.log("BODY RECEIVED:", req.body); // 🔥 ADD THIS
+
+    const farmer = await Farmer.create(req.body);
+
+    console.log("SAVED:", farmer); // 🔥 ADD THIS
+
+    res.status(201).json({
+      success: true,
+      message: 'Farmer registered successfully',
+      data: farmer
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+const fetchFarmers = async (req, res) => {
+  try {
+
+    const farmers = await Farmer.find()
+      .sort({ createdAt: -1 });
+
+    res.set('Cache-Control', 'no-store');
+
+    res.json(farmers);
+
+  } catch (err) {
+
+    console.error('Error fetching farmers:', err);
+
+    res.status(500).json({
+      message: err.message
+    });
+  }
+};
+
+router.get('/all', fetchFarmers);
+router.get('/', fetchFarmers);
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const farmer = await Farmer.findByIdAndDelete(req.params.id);
+    if (!farmer) {
+      return res.status(404).json({ message: 'Farmer not found' });
+    }
+    res.json({ message: 'Farmer deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+module.exports = router;
