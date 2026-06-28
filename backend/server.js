@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
 
-const connectDB = require('./config/db');        // ✅ DB
+const { connectDB } = require('./config/db');     // ✅ DB
 const billRoutes = require('./routes/billRoutes'); // controller-backed
 const farmerRoutes = require('./routes/farmerRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
