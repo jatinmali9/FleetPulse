@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TMS Support & Contact</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+.success-popup {
+  transform: scale(0.6);
+  opacity: 0;
+  transition: .3s ease-in-out;
+}
+.success-popup.show {
+  transform: scale(1);
+  opacity: 1;
+}
+</style>
+</head>
+
+<body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition">
+
+<!-- Header -->
+<header class="bg-blue-600 dark:bg-blue-800 text-white py-4 text-center text-xl font-semibold">
+  Fleet Pulse- Support
+</header>
+
+<!-- Dark Mode Toggle -->
+<div class="absolute top-4 right-4">
+  <button id="themeToggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white p-2 rounded-full shadow">
+    🌙
+  </button>
+</div>
+
+<!-- Container -->
+<div class="max-w-5xl mx-auto py-8 px-4">
+
+  <!-- Support Instructions -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-bold text-blue-700 dark:text-blue-400 mb-2">📘 Support Instructions</h2>
+    <p class="mb-3">If you face issues, try:</p>
+    <ul class="list-disc ml-5 space-y-1">
+      <li>Check internet connection</li>
+      <li>Fill all form fields correctly</li>
+      <li>Clear cache if dashboard not updating</li>
+      <li>Ensure modules sync (GPS/Billing)</li>
+    </ul>
+  </section>
+
+  <!-- Contact Cards -->
+  <section class="grid md:grid-cols-3 gap-4 mb-8">
+    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+      <h4 class="font-bold">📧 Email Support</h4>
+      support@fleetpulse.com
+    </div>
+    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+      <h4 class="font-bold">📱 Phone</h4>
+      +91 00000 00000
+    </div>
+    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+      <h4 class="font-bold">🏢 Address</h4>
+      Maharashtra
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section>
+    <h2 class="text-2xl font-bold text-blue-700 dark:text-blue-400 mb-4">✉️ Contact Us</h2>
+
+    <form id="contactForm" class="space-y-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <input id="name" type="text" placeholder="Your Name"
+        class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
+
+      <input id="email" type="email" placeholder="Your Email"
+        class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
+
+      <input id="subject" type="text" placeholder="Subject"
+        class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
+
+      <textarea id="message" rows="4" placeholder="Message..."
+        class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required></textarea>
+
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow">
+        Submit
+      </button>
+
+      <!-- Success Popup -->
+      <div id="successPopup" class="success-popup bg-green-500 text-white p-3 rounded mt-2 text-center hidden">
+        ✅ Message Sent Successfully!
+      </div>
+    </form>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-8 bg-blue-50 dark:bg-gray-800 p-5 rounded-lg">
+    <h2 class="text-2xl font-bold mb-3">❓ FAQ</h2>
+
+    <details class="p-2"><summary>How to reset data?</summary>Use reset button in dashboard settings.</details>
+    <details class="p-2"><summary>Bulk upload?</summary>Coming soon.</details>
+    <details class="p-2"><summary>Data location?</summary>Secure database + export enabled.</details>
+    <details class="p-2"><summary>Contact admin?</summary>Email: admin@tmsportal.com</details>
+
+  </section>
+</div>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/918483828229" target="_blank"
+class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg text-2xl">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- Footer -->
+<footer class="text-center py-4 bg-gray-200 dark:bg-gray-800 mt-8">
+  © 2025 | FleetPulse
+</footer>
+
+<script>
+// Dark Mode
+const themeBtn = document.getElementById("themeToggle");
+themeBtn.addEventListener("click", () => {
+  document.documentElement.classList.toggle("dark");
+});
+
+// Form Handler
+document.getElementById("contactForm").addEventListener("submit", async(e) => {
+  e.preventDefault();
+  
+  let name = document.getElementById("name").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let message = document.getElementById("message").value.trim();
+
+  if(!name || !email || !message) return alert("Fill all fields!");
+
+  // ✅ SEND TO BACKEND HERE (replace URL)
+  /* Example fetch:
+  fetch("YOUR_BACKEND_URL", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({name, email, message})
+  });
+  */
+
+  // ✅ Show success popup
+  let popup = document.getElementById("successPopup");
+  popup.classList.remove("hidden");
+  setTimeout(()=> popup.classList.add("show"),100);
+  setTimeout(()=> popup.classList.remove("show"),3000);
+});
+</script>
+
+</body>
+</html>

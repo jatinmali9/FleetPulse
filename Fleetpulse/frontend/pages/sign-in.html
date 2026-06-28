@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign In - Fleet Pulse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto}</style>
+</head>
+<body class="bg-gray-100">
+  <div class="flex min-h-screen items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-lg max-w-sm w-full">
+      <h1 class="text-2xl font-bold text-blue-600">Fleet Pulse — Sign In</h1>
+      <form id="loginForm" class="space-y-6">
+        <input id="email" type="email" placeholder="Email" required class="w-full p-2 border rounded" />
+        <input id="password" type="password" placeholder="Password" required class="w-full p-2 border rounded" />
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Sign In</button>
+      </form>
+      <p class="mt-4 text-center"><a href="/sign-up.html" class="text-blue-600">Create account</a></p>
+    </div>
+  </div>
+  <script>
+    document.getElementById('loginForm')?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email=document.getElementById('email').value, password=document.getElementById('password').value;
+      const res=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+      const data=await res.json();
+      if(res.ok){localStorage.setItem('token',data.token); window.location.href='/Dashboard.html';}else{alert(data.message||'Login failed')}
+    });
+  </script>
+</body>
+</html>

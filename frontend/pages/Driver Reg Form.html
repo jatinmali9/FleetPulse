@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Driver Registration Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f0f8f5;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 95%;
+      max-width: 600px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1565c0;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: 500;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: #1565c0;
+      box-shadow: 0 0 5px rgba(21, 101, 192, 0.4);
+    }
+
+    .section-title {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #0d47a1;
+      border-bottom: 2px solid #1565c0;
+      padding-bottom: 5px;
+    }
+
+    .btn {
+      background: #1565c0;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #0d47a1;
+    }
+
+    .result {
+      background: #e3f2fd;
+      color: #0d47a1;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Driver Registration Form</h2>
+    <form id="driverForm">
+      
+      <!-- Driver Details -->
+      <div class="section-title">Driver Details</div>
+      <label for="driverName">Full Name</label>
+      <input type="text" id="driverName" placeholder="Enter driver name" required>
+
+      <label for="contact">Contact Number</label>
+      <input type="tel" id="contact" placeholder="Enter contact number" required>
+
+      <label for="address">Address</label>
+      <input type="text" id="address" placeholder="Enter address" required>
+
+      <label for="license">License Number</label>
+      <input type="text" id="license" placeholder="Enter license number" required>
+
+      <label for="expiry">License Expiry Date</label>
+      <input type="date" id="expiry" required>
+
+      <label for="vehicle">Assigned Vehicle ID / Number</label>
+      <input type="text" id="vehicle" placeholder="Enter vehicle ID or number" required>
+
+      <!-- Payroll Section -->
+      <div class="section-title">Payroll Details</div>
+      <label for="basePay">Base Salary (₹)</label>
+      <input type="number" id="basePay" placeholder="Enter base salary" required>
+
+      <label for="trips">Trips Completed</label>
+      <input type="number" id="trips" placeholder="Enter number of trips" required>
+
+      <label for="rate">Rate per Trip (₹)</label>
+      <input type="number" id="rate" placeholder="Enter rate per trip" required>
+
+      <label for="total">Total Pay (₹)</label>
+      <input type="text" id="total" readonly>
+
+      <button type="submit" class="btn">Register Driver</button>
+      <div class="result" id="result"></div>
+    </form>
+  </div>
+
+  <script>
+  const basePay = document.getElementById("basePay");
+  const trips = document.getElementById("trips");
+  const rate = document.getElementById("rate");
+  const total = document.getElementById("total");
+
+  // Calculate Total Pay dynamically
+  function calculateTotal() {
+    const base = parseFloat(basePay.value) || 0;
+    const tripCount = parseFloat(trips.value) || 0;
+    const tripRate = parseFloat(rate.value) || 0;
+    total.value = (base + tripCount * tripRate).toFixed(2);
+  }
+
+  basePay.addEventListener("input", calculateTotal);
+  trips.addEventListener("input", calculateTotal);
+  rate.addEventListener("input", calculateTotal);
+
+  // Submit form to backend
+  document.getElementById("driverForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const payload = {
+      name: document.getElementById("driverName").value,
+      contact: document.getElementById("contact").value,
+      address: document.getElementById("address").value,
+      license: document.getElementById("license").value,
+      licenseExpiry: document.getElementById("expiry").value,
+      vehicle: document.getElementById("vehicle").value,
+
+      basePay: parseFloat(basePay.value) || 0,
+      trips: parseFloat(trips.value) || 0,
+      ratePerTrip: parseFloat(rate.value) || 0,
+      totalPay: parseFloat(total.value) || 0
+    };
+
+    try {
+      const res = await fetch("/api/driver/register", {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        document.getElementById("result").innerText = "❌ " + data.message;
+        return;
+      }
+
+      document.getElementById("result").innerText =
+        `✅ Driver "${payload.name}" registered successfully. Total Pay: ₹${payload.totalPay}`;
+
+      this.reset();
+      total.value = "";
+    } catch (error) {
+      console.error(error);
+      document.getElementById("result").innerText = "❌ Something went wrong.";
+    }
+  });
+</script>
+
+</body>
+</html>

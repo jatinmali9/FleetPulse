@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>महाभगवती व्हेजिटेबल कंपनी</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        .mbt-logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    width: 45px;
+    height: 120px;
+
+    border: 2px solid #cc0000;
+    color: #cc0000;
+
+    font-weight: bold;
+    font-size: 20px;
+
+    text-align: center;
+    line-height: 35px;
+
+    background-color: #ffe5e5;
+
+    border-radius: 6px;
+}
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .invoice-container {
+            width: 180mm;
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px solid #cc0000;
+            background-color: #ffe5e5;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 10px;
+            position: relative;
+        }
+
+        .header-logo {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 115px;
+            height: 140px;
+            display: flex;
+            align-items: left;
+            justify-content: left;
+            background-color: #ffe5e5;
+            border: 0px solid #cc0000;
+            border-radius: 8px;
+            overflow: hidden;
+            left: -5px;
+        }
+
+        .header-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .header-phones {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0;
+            color: #cc0000;
+        }
+        
+        .header h2 {
+            font-size: 22px;
+            margin: 8px 0 0 0;
+            color: #cc0000;
+        }
+        
+        .header h3 {
+            font-size: 16px;
+            margin: 5px 0 0 0;
+            color: #1f1c1c;
+        }
+        
+        .header h4 {
+            font-size: 16px;
+            margin: 8px 0 0 0;
+            color: #1f1c1c;
+        }
+
+        .contact-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #cc0000;
+    padding: 10px 0;
+}
+
+/* LEFT BOX */
+.hishob-box {
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #cc0000;
+    padding: 6px 15px;
+    border-radius: 8px;
+    background-color: #ffe5e5;
+}
+
+/* RIGHT SIDE */
+.right-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* EACH ROW */
+.right-info .row {
+    display: grid;
+    grid-template-columns: 60px 140px; /* 🔥 KEY FIX */
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* LABEL ALIGN */
+.label {
+    text-align: right;
+    font-weight: bold;
+}
+
+
+/* INPUT ALIGN */
+.right-info input {
+    width: 130px;
+    text-align: center;
+    border: 1px solid #cc0000;
+    font-weight: bold;
+}
+
+        .contact-info p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .contact-info .invoice-details {
+            text-align: right;
+        }
+
+        .bill-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .detail-item .label {
+            font-weight: bold;
+            margin-right: 8px;
+            white-space: nowrap;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="time"] {
+            padding: 6px;
+            border: 1px solid #030202;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .value-input {
+            border: 1px dashed #aaa;
+            font-weight: bold;
+        }
+
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        
+        .item-table th,
+        .item-table td {
+            border: 1px solid #cc0000;
+            padding: 6px;
+            text-align: center;
+        }
+        
+        .item-table th {
+            background-color: #fff0f0;
+            color: #333;
+        }
+        
+        .item-table input {
+            width: 90%;
+            border: 1px solid #ddd;
+            text-align: right;
+        }
+        
+        .item-table input[type="text"] {
+            text-align: left;
+        }
+        
+        .item-table input[readonly] {
+            background-color: #f4f4f4;
+            border: none;
+            font-weight: bold;
+        }
+
+        .delete-row-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .delete-row-btn:hover { 
+            background-color: #cc0000; 
+        }
+
+        #add-row-btn {
+            margin: 10px 0;
+            padding: 8px 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+        }
+        
+        #add-row-btn:hover { 
+            background-color: #0056b3; 
+        }
+
+        .totals-section {
+            margin-top: 10px;
+            border-top: 1px solid #cc0000;
+            border-bottom: 7px solid #cc0000;
+        }
+        
+        .totals-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+        }
+        
+        .totals-column {
+            padding: 10px;
+        }
+        
+        .totals-column:nth-child(2) {
+            border-left: 1px solid #cc0000;
+            border-right: 1px solid #cc0000;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .total-label { 
+            font-weight: bold; 
+        }
+        
+        .totals-section input {
+            text-align: right;
+            font-weight: bold;
+            width: 100px;
+        }
+        .totals-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* LEFT SIDE */
+.totals-left {
+    width: 40%;
+}
+
+/* RIGHT SIDE */
+.totals-right {
+    width: 50%;
+}
+
+/* COMMON ROW STYLE */
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+/* LABEL */
+.total-label {
+    font-weight: bold;
+    width: 140px;
+    text-align: right;
+}
+
+/* INPUT */
+.total-row input {
+    width: 140px;
+    text-align: center;
+    border: 1px solid #cc0000;
+}
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            font-weight: bold;
+            
+            padding-top: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .print-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .print-btn:hover {
+            background-color: #218838;
+        }
+        
+        .reset-btn {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .reset-btn:hover {
+            background-color: #e0a800;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background-color: white;
+            }
+            
+            .invoice-container {
+                box-shadow: none;
+                border: 2px solid #cc0000;
+                width: 100%;
+                background-color: white;
+            }
+            
+            #add-row-btn, .delete-row-btn, .action-buttons { 
+                display: none; 
+            }
+            
+            input { 
+                border: none; 
+                background-color: transparent;
+            }
+            
+            .header-logo, .header-phones { 
+                display: block; 
+            }
+            
+        }
+        .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%) rotate(-20deg);
+
+    font-size: 120px;
+    font-weight: bold;
+    color: #220d0d;
+
+    opacity: 0.08;   /* 🔥 FADE EFFECT */
+
+    pointer-events: none;  /* so it doesn’t block clicks */
+
+    z-index: 0;
+}
+    </style>
+</head>
+
+<body>
+    
+<div class="invoice-container">
+    <div class="watermark">MBT</div>
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assests/maha.png ">
+        </div>
+        <div class="header-phones">7741068085<br>9420592008</div>
+        <div style="font-size:20px; font-weight:bold; color:#000000; margin-bottom:5px;">||श्री||</div>
+        <h1>महाभगवती व्हेजिटेबल कंपनी</h1>
+        <h2>व्हेजिटेबल कमिशन एजंट अँड ऑर्डर सप्लायर्स</h2>
+        <h3>कृषी उत्पन्न बाजार समिती, वणी, ता. दिंडोरी, जि. नाशिक</h3>
+        <h4>प्रो.प्रा. प्रविण मधुकर सोनवणे</h4>
+    </div>
+
+    <div class="contact-info">
+  
+ <div class="left-info">
+    <span class="hishob-box">हिशोब पट्टी</span>
+  </div>
+
+  <div class="right-info">
+    <div class="row">
+      <span class="label">तारीख:</span>
+      <input type="date" id="invoice-date" required>
+    </div>
+
+    <div class="row">
+      <span class="label">नंबर:</span>
+        <input type="text" id="invoice-no" readonly style="background:#eee; font-weight:bold;">
+    </div>
+  </div>
+
+</div>
+
+    <div style="margin-top:10px;">
+
+  <table style="width:100%; border-collapse:collapse; margin-bottom:10px;">
+
+    <!-- ROW 1 -->
+    <tr>
+      <td style="width:15%; font-weight:bold;">सौ.प.:</td>
+      <td style="width:35%;">
+        <input type="text" id="sau-name" style="width:90%;" required>
+      </td>
+
+      <td style="width:15%; font-weight:bold; text-align:right;">शेतकरी:</td>
+      <td style="width:35%;">
+        <input type="text" id="farmer-name" style="width:95%;" required>
+      </td>
+    </tr>
+
+    <!-- ROW 2 -->
+    <tr>
+      <td></td>
+      <td></td>
+
+      <td style="font-weight:bold; text-align:right;">गांव:</td>
+      <td>
+        <input type="text" id="farmer-village" style="width:95%;" required>
+      </td>
+    </tr>
+
+    <!-- ROW 3 -->
+    <tr>
+      <td style="font-weight:bold;">खरेदीदार:</td>
+      <td colspan="2">
+        <input type="text" id="buyer-name" style="width:95%;" required>
+      </td>
+
+      <td style="text-align:right;">
+  <span style="font-weight:bold;">Time:</span>
+  <input type="text" id="current-time" style="width:120px;" readonly>
+</td>
+    </tr>
+
+  </table>
+
+</div>
+
+
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th>प्रकार</th>
+                <th>जाळी</th>
+                <th>किलो</th>
+                <th>भाव</th>
+                <th>एकुण</th>
+                <th>Del</th>
+            </tr>
+        </thead>
+        <tbody id="item-list"></tbody>
+        <tfoot>
+  <tr style="background:#fff0f0; font-weight:bold;">
+    <td>एकूण</td>
+    <td><input type="text" id="total-jaali" readonly></td>
+    <td></td>
+    <td></td>
+    <td><input type="text" id="total-amount" readonly></td>
+    <td></td>
+  </tr>
+</tfoot>
+    </table>
+
+    <button type="button" id="add-row-btn">Add Item (नवीन आयटम)</button>
+
+    <div class="totals-section">
+
+  <div class="totals-wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="totals-left">
+      <div class="total-row">
+        <span class="total-label">आडत रु.:</span>
+        <input type="text" id="commission" readonly>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="totals-right">
+
+      <div class="total-row">
+        <span class="total-label">एकूण रु.:</span>
+        <input type="text" id="subtotal" readonly>
+      </div>
+
+      <div class="total-row">
+        <span class="total-label">खर्च (-):</span>
+        <input type="text" id="expenses" readonly>
+      </div>
+
+      <div class="total-row">
+        <span class="total-label">रोख मिळाले:</span>
+        <input type="text" id="final-amount" readonly style="color:#cc0000; font-weight:bold;">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer-text">
+    वरील प्रमाणे रोख रुपये मिळाले. तक्रार नाही.
+  </div>
+
+    <div class="footer">
+        <div><p>मापाऱ्याची सही</p></div>
+        <div><p>मालधान्याची सही</p></div>
+    </div>
+    
+    <div class="action-buttons">
+        <button type="button" class="action-btn reset-btn" id="reset-btn">Reset (रिसेट)</button>
+        <button type="button" class="action-btn print-btn" id="print-btn">Print (प्रिंट)</button>
+    </div>
+</div>
+
+<script>
+
+    
+function updateTime() {
+    const now = new Date();
+
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    if (minutes < 10) minutes = "0" + minutes;
+
+    document.getElementById("current-time").value = hours + ":" + minutes;
+}
+
+// run first time
+updateTime();
+
+// 🔥 update every 1 second
+setInterval(updateTime, 1000);
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const itemList = document.getElementById('item-list');
+    const addRowBtn = document.getElementById('add-row-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const printBtn = document.getElementById('print-btn');
+
+    // --- Auto Increment Invoice Number ---
+    
+    // --- Default Date & Time ---
+    
+
+    // --- Add Row ---
+    function addRow() {
+        const tr = document.createElement('tr');
+        tr.classList.add('item-row');
+        tr.innerHTML = `
+            <td><input type="text" class="item-type" placeholder="उदा. टोमॅटो" required></td>
+            <td><input type="number" class="item-jaali" placeholder="0" min="0" required></td>
+            <td><input type="number" class="item-kilo" placeholder="0.00" min="0" step="0.01"></td>
+            <td><input type="number" class="item-rate" placeholder="0.00" min="0" step="0.01" required></td>
+            <td><input type="text" class="item-amount" readonly ></td>
+            <td><button class="delete-row-btn">X</button></td>`;
+        itemList.appendChild(tr);
+        
+        // Add event listeners to new inputs
+        tr.querySelector('.item-jaali').addEventListener('input', calculateTotals);
+        tr.querySelector('.item-kilo').addEventListener('input', calculateTotals);
+        tr.querySelector('.item-rate').addEventListener('input', calculateTotals);
+        
+        // Focus on the new item type input
+        tr.querySelector('.item-type').focus();
+    }
+
+    function deleteRow(btn) {
+        if (itemList.querySelectorAll('.item-row').length > 1) {
+            btn.closest('tr').remove();
+            calculateTotals();
+        } else {
+            alert('किमान एक आयटम असणे आवश्यक आहे');
+        }
+    }
+
+    
+    function calculateTotals() {
+    let subtotal = 0;
+    let totalJaali = 0;
+
+    itemList.querySelectorAll('.item-row').forEach(row => {
+        const jaali = parseFloat(row.querySelector('.item-jaali').value) || 0;
+        const kilo = parseFloat(row.querySelector('.item-kilo').value) || 0;
+        const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+
+        const amount = (jaali * rate) + ((kilo / 20) * rate);
+
+        row.querySelector('.item-amount').value = amount.toFixed(2);
+
+        subtotal += amount;
+        totalJaali += jaali;
+    });
+
+    // 🔥 UPDATE TABLE FOOTER (THIS WAS MISSING)
+    document.getElementById('total-jaali').value = totalJaali;
+    document.getElementById('total-amount').value = subtotal.toFixed(2);
+
+    // 🔥 AUTO CALCULATE
+    const commission = totalJaali / 2;
+    const expenses = commission;
+    const finalAmount = subtotal - expenses;
+
+    // 🔥 UPDATE UI
+    document.getElementById('subtotal').value = subtotal.toFixed(2);
+    document.getElementById('commission').value = commission.toFixed(2);
+    document.getElementById('expenses').value = expenses.toFixed(2);
+    document.getElementById('final-amount').value = finalAmount.toFixed(2);
+}
+showNextNumber();
+    // --- Reset For
+    // m ---
+    function resetForm() {
+        if (confirm('तुम्हाला हा फॉर्म रिसेट करायचा आहे का?')) {
+            // Clear all inputs
+            document.querySelectorAll('input').forEach(input => {
+                if (input.type !== 'button' && !input.readOnly) {
+                    input.value = '';
+                }
+            });
+            
+            // Remove all but one item row
+            const rows = itemList.querySelectorAll('.item-row');
+            for (let i = 1; i < rows.length; i++) {
+                rows[i].remove();
+            }
+            
+            // Reset the first row
+            const firstRow = itemList.querySelector('.item-row');
+            if (firstRow) {
+                firstRow.querySelector('.item-type').value = '';
+                firstRow.querySelector('.item-jaali').value = '';
+                firstRow.querySelector('.item-kilo').value = '';
+                firstRow.querySelector('.item-rate').value = '';
+                firstRow.querySelector('.item-amount').value = '';
+            }
+            
+            // Update invoice number and date/time
+            
+            
+            
+            // Reset totals
+            document.getElementById('subtotal').value = '';
+            document.getElementById('total-deductions').value = '';
+            document.getElementById('final-amount').value = '';
+        }
+    }
+
+    // --- Print Invoice ---
+    let isSaved = false;  // ✅ GLOBAL (outside function)
+    async function printInvoice() {
+        if (isSaved) {
+        window.print(); // only print again
+        return;
+    }
+
+
+    try {
+
+       
+const farmer = document.getElementById('farmer-name');
+const village = document.getElementById('farmer-village');
+const buyer = document.getElementById('buyer-name');
+const sauda = document.getElementById('sau-name');
+
+if (!farmer.value) {
+    farmer.focus();
+    farmer.style.border = "2px solid red";
+    alert("Enter farmer name");
+    return;
+}
+if (!sauda.value) {
+    sauda.focus();
+    sauda.style.border = "2px solid red";
+    alert("Enter sauda name");
+    return;
+}
+
+if (!village.value) {
+    village.focus();
+    village.style.border = "2px solid red";
+    alert("Enter village");
+    return;
+}
+
+if (!buyer.value) {
+    buyer.focus();
+    buyer.style.border = "2px solid red";
+    alert("Enter buyer name");
+    return;
+}
+
+        // 🔥 ITEM VALIDATION
+        let valid = true;
+
+for (let i = 0; i < document.querySelectorAll('.item-row').length; i++) {
+
+    const row = document.querySelectorAll('.item-row')[i];
+
+    const type = row.querySelector('.item-type');
+    const jaali = row.querySelector('.item-jaali');
+    const rate = row.querySelector('.item-rate');
+
+    if (!type.value.trim()) {
+        type.focus();
+        type.style.border = "2px solid red";
+        alert(`Enter प्रकार in row ${i + 1}`);
+        valid = false;
+        break;
+    }
+
+    if (!jaali.value) {
+        jaali.focus();
+        jaali.style.border = "2px solid red";
+        alert(`Enter जाळी in row ${i + 1}`);
+        valid = false;
+        break;
+    }
+
+    if (!rate.value) {
+        rate.focus();
+        rate.style.border = "2px solid red";
+        alert(`Enter भाव in row ${i + 1}`);
+        valid = false;
+        break;
+    }
+}
+
+if (!valid) return;
+
+        // 🔥 COLLECT DATA
+        const items = [];
+
+        document.querySelectorAll('.item-row').forEach(row => {
+            items.push({
+                type: row.querySelector('.item-type').value,
+                jaali: row.querySelector('.item-jaali').value,
+                kilo: row.querySelector('.item-kilo').value,
+                rate: row.querySelector('.item-rate').value,
+                amount: row.querySelector('.item-amount').value
+            });
+        });
+
+        const data = {
+            number: document.getElementById('invoice-no').value,
+            date: document.getElementById('invoice-date').value,
+            farmer: document.getElementById('farmer-name').value,
+            village: document.getElementById('farmer-village').value,
+            buyer: document.getElementById('buyer-name').value,
+            items: items,
+            totalJaali: document.getElementById('total-jaali').value,
+            totalAmount: document.getElementById('total-amount').value,
+            commission: document.getElementById('commission').value,
+            expenses: document.getElementById('expenses').value,
+            finalAmount: document.getElementById('final-amount').value
+        };
+
+        console.log("DATA:", data);
+
+        // 🔥 SAVE TO DATABASE (IMPORTANT FIX)
+        const res = await fetch("/api/bill/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        document.getElementById("invoice-no").value = result.number;
+        console.log(result);
+
+        // 🔥 SUCCESS MESSAGE
+        alert("Data saved successfully");
+        isSaved = true;  // ✅ mark as saved
+
+document.getElementById("print-btn").innerText = "Reprint";
+
+        // 🔥 PRINT AFTER SAVE
+        window.print();
+
+    } catch (err) {
+        console.error(err);
+        alert("Error saving bill");
+    }
+}
+
+    // --- Event Listeners ---
+    addRowBtn.addEventListener('click', addRow);
+    
+    resetBtn.addEventListener('click', resetForm);
+    
+    printBtn.addEventListener('click', printInvoice);
+    
+    itemList.addEventListener('click', e => {
+        if (e.target.classList.contains('delete-row-btn')) {
+            deleteRow(e.target);
+        }
+    });
+    
+    
+    
+    document.querySelectorAll('.total-calc').forEach(input => {
+        input.addEventListener('input', calculateTotals);
+    });
+
+    // --- Initialize ---
+    
+    
+    
+    addRow(); // Add one initial row
+});
+
+async function showNextNumber() {
+  try {
+    const res = await fetch("/api/bill/next-number");
+    const data = await res.json();
+
+    document.getElementById("invoice-no").value = data.number;
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const today = new Date().toISOString().split('T')[0];
+
+    document.getElementById("invoice-date").value = today;
+
+});
+
+document.addEventListener('input', function(e) {
+    if (e.target.tagName === "INPUT") {
+        e.target.style.border = "";
+    }
+});
+// call on page load
+
+</script>
+</body>
+</html>

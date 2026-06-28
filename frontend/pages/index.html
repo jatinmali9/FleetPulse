@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet Pulse - Transportation & Aadat Association</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* --- Background Image with Overlay --- */
+    .background {
+      background-image: url('https://spudsmart.com/wp-content/uploads/2024/02/AdobeStock_217004403-scaled.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    .background::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(15, 118, 110, 0.4) 100%);
+      backdrop-filter: blur(2px);
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navbar styling */
+    .navbar {
+      background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(15, 118, 110, 0.98);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link {
+      position: relative;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    /* Gradient button styles */
+    .btn-gradient {
+      background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(15, 118, 110, 0.3);
+    }
+
+    .btn-gradient-secondary {
+      background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-gradient-secondary:hover {
+      background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(6, 95, 70, 0.3);
+    }
+
+    /* Card hover effects */
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Feature icons */
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .feature-icon.teal {
+      background-color: rgba(20, 184, 166, 0.1);
+      color: #0f766e;
+    }
+
+    .teal-link {
+      color: #0f766e;
+      transition: color 0.3s ease;
+    }
+
+    .teal-link:hover {
+      color: #0d9488;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar flex justify-between items-center px-6 py-3 sticky top-0 z-50 text-white">
+    <div class="flex items-center">
+      <a href="#home" class="text-2xl font-bold text-white flex items-center">
+        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-3">
+          <i class="fas fa-seedling text-white"></i>
+        </div>
+        AgriFleet
+      </a>  
+    </div>
+
+    <!-- Desktop Navigation -->
+    <ul class="hidden lg:flex space-x-8 font-medium">
+      <li><a href="#home" class="nav-link text-white/90 hover:text-white active">Home</a></li>
+      <li><a href="./enterprise.html" class="nav-link text-white/90 hover:text-white">Enterprise</a></li>
+      <li><a href="./transportation.html" class="nav-link text-white/90 hover:text-white">Transportation</a></li>
+      <li><a href="./fleetover.html" class="nav-link text-white/90 hover:text-white">Features</a></li>
+    </ul>
+
+    <div class="hidden lg:flex items-center space-x-4">
+      <a href="./support.html" class="nav-link text-white/90 hover:text-white">Support</a>
+      
+      <a href="./sign-in.html" class="text-white/90 hover:text-white font-medium transition-colors duration-300">Sign In</a>
+      <a href="./sign-up.html" class="bg-white/20 hover:bg-white/30 text-white py-2 px-5 rounded-lg font-medium shadow flex items-center transition-all duration-300">
+        <span>Sign Up</span>
+        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+      </a>
+    </div>
+
+    <button id="mobile-menu-button" class="lg:hidden text-white focus:outline-none">
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-40 lg:hidden">
+    <div class="flex justify-between items-center p-6 border-b">
+      <span class="text-lg font-semibold text-gray-800">Menu</span>
+      <button id="close-menu" class="text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <div class="p-6">
+      <ul class="space-y-6">
+        <li><a href="#home" class="block text-gray-700 hover:text-teal-600 font-medium py-2">Home</a></li>
+        <li><a href="./enterprise.html" class="block text-gray-700 hover:text-teal-600 font-medium py-2">Enterprise</a></li>
+        <li><a href="./transportation.html" class="block text-gray-700 hover:text-teal-600 font-medium py-2">Transportation</a></li>
+        <li><a href="#features" class="block text-gray-700 hover:text-teal-600 font-medium py-2">Features</a></li>
+        <li><a href="./support.html" class="block text-gray-700 hover:text-teal-600 font-medium py-2">Support</a></li>
+        <li><a href="./sign-in.html" class="block text-gray-700 hover:text-teal-600 font-medium py-2">Sign In</a></li>
+        <li>
+          <a href="./sign-up.html" class="btn-gradient text-white py-3 px-4 rounded-lg font-medium shadow block text-center mt-4">
+            Sign Up
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section id="home" class="background text-white flex items-center justify-center text-center py-32 px-6">
+    <div class="content max-w-3xl">
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+        Empowering Transportation & Aadat Associations
+      </h1>
+      <p class="mt-6 text-gray-200 text-xl max-w-2xl mx-auto">
+        Streamline farming logistics, vehicle tracking, and trade management with Fleet Pulse's smart digital platform.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#learn-more" class="btn-gradient text-white px-8 py-4 rounded-lg font-medium text-lg">
+          Learn More <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+        <a href="#features" class="bg-transparent border-2 border-white hover:bg-white hover:text-teal-700 text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300">
+          View Features
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-16 px-6 bg-gray-50">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Powerful Features for Your Fleet</h2>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Our platform offers comprehensive solutions to optimize your transportation and logistics operations.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-2xl shadow-md card-hover">
+          <div class="feature-icon teal">
+            <i class="fas fa-tachometer-alt text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Fleet Overview</h3>
+          <p class="mt-4 text-gray-600">
+            Gain insights into your vehicles, drivers, and logistics with data-driven management tools.
+          </p>
+          <a href="#" class="inline-block mt-4 teal-link font-medium">
+            Learn more <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-md card-hover">
+          <div class="feature-icon teal">
+            <i class="fas fa-map-marker-alt text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Real-time Tracking</h3>
+          <p class="mt-4 text-gray-600">
+            Monitor routes, track produce shipments, and ensure on-time deliveries from farms to markets.
+          </p>
+          <a href="./mapDashboard.html" class="inline-block mt-4 teal-link font-medium">
+            Learn more <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-md card-hover">
+          <div class="feature-icon teal">
+            <i class="fas fa-chart-line text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Analytics & Reports</h3>
+          <p class="mt-4 text-gray-600">
+            Get detailed insights into fleet performance, fuel consumption, and operational efficiency.
+          </p>
+          <a href="/frontend/dashboard.html" class="inline-block mt-4 teal-link font-medium">
+              Learn more <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 px-6 bg-gradient-to-r from-teal-600 to-teal-700 text-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold">Ready to Transform Your Fleet Management?</h2>
+      <p class="mt-4 text-teal-100 text-lg max-w-2xl mx-auto">
+        Join thousands of transportation associations using Fleet Pulse to optimize their operations.
+      </p>
+      <div class="mt-8">
+        <a href="./sign-up.html" class="btn-gradient-secondary text-white px-8 py-4 rounded-lg font-medium text-lg inline-block">
+          Get Started Today <i class="fas fa-rocket ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="md:col-span-2">
+          <a href="#home" class="text-2xl font-bold text-white flex items-center mb-4">
+            <i class="fas fa-satellite-dish mr-2 text-teal-400"></i>
+            Fleet Pulse
+          </a>
+          <p class="text-gray-400 max-w-md">
+            Empowering transportation and aadat associations with smart digital solutions for fleet management and logistics optimization.
+          </p>
+          <div class="flex space-x-4 mt-6">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+            <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
+            <li><a href="./enterprise.html" class="text-gray-400 hover:text-white transition-colors">Enterprise</a></li>
+            <li><a href="./transportation.html" class="text-gray-400 hover:text-white transition-colors">Transportation</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Support</h3>
+          <ul class="space-y-2">
+            <li><a href="./support.html" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <p>© 2025 Fleet Pulse </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================= FLEETBOT AI ASSISTANT ========================= -->
+  <div id="fleetbot" class="fixed bottom-6 right-6">
+    <button id="openBot" class="bg-teal-600 hover:bg-teal-700 text-white p-4 rounded-full shadow-lg focus:outline-none">
+      <i class="fas fa-robot text-2xl"></i>
+    </button>
+
+    <div id="chatWindow" class="hidden w-80 h-96 bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
+      <div class="bg-teal-600 text-white p-4 flex justify-between items-center">
+        <h2 class="text-lg font-semibold">FleetBot Assistant</h2>
+        <button id="closeBot" class="text-white text-lg"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50">
+        <div class="bg-teal-100 text-teal-900 px-3 py-2 rounded-lg text-sm max-w-[75%]">👋 Hello! I’m FleetBot. How can I help you today?</div>
+      </div>
+
+      <div class="p-3 border-t flex items-center bg-white">
+        <input id="userInput" type="text" placeholder="Type or speak..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+        <button id="voiceBtn" class="ml-2 text-teal-600 hover:text-teal-700"><i class="fas fa-microphone text-lg"></i></button>
+        <button id="sendBtn" class="ml-2 text-teal-600 hover:text-teal-700"><i class="fas fa-paper-plane text-lg"></i></button>
+      </div>
+    </div>
+  </div>
+
+<script>
+    // // Navbar and Menu Logic
+    // const mobileMenuButton = document.getElementById('mobile-menu-button');
+    // const mobileMenu = document.getElementById('mobile-menu');
+    // const closeMenuButton = document.getElementById('close-menu');
+    // const navbar = document.getElementById('navbar');
+    // mobileMenuButton.addEventListener('click', () => mobileMenu.classList.add('open'));
+    // closeMenuButton.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    // window.addEventListener('scroll', () => {
+    //   if (window.scrollY > 50) navbar.classList.add('scrolled');
+    //   else navbar.classList.remove('scrolled');
+    // });
+
+    // // FleetBot Logic
+    // const openBot = document.getElementById('openBot');
+    // const closeBot = document.getElementById('closeBot');
+    // const chatWindow = document.getElementById('chatWindow');
+    // openBot.addEventListener('click', () => chatWindow.classList.toggle('hidden'));
+    // closeBot.addEventListener('click', () => chatWindow.classList.add('hidden'));
+
+    // const chatMessages = document.getElementById('chatMessages');
+    // const userInput = document.getElementById('userInput');
+    // const sendBtn = document.getElementById('sendBtn');
+    // const voiceBtn = document.getElementById('voiceBtn');
+
+    // function addMessage(content, sender = 'user') {
+    //   const msgDiv = document.createElement('div');
+    //   msgDiv.className = sender === 'user'
+    //     ? 'bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm self-end max-w-[75%] ml-auto'
+    //     : 'bg-teal-100 text-teal-900 px-3 py-2 rounded-lg text-sm max-w-[75%]';
+    //   msgDiv.textContent = content;
+    //   chatMessages.appendChild(msgDiv);
+    //   chatMessages.scrollTop = chatMessages.scrollHeight;
+    // }
+
+    // function speak(text) {
+    //   const speech = new SpeechSynthesisUtterance(text);
+    //   speech.lang = 'en-IN';
+    //   speech.pitch = 1;
+    //   speech.rate = 1;
+    //   window.speechSynthesis.speak(speech);
+    // }
+
+    //   function getAIResponse(question) {
+    //     question = question.toLowerCase();
+    //     if (question.includes("onion")) return "Today’s onion rate is ₹20 per kg at Pune Market.";
+    //     if (question.includes("vehicle")) return "Vehicle MH12AB1234 is currently en route from Nashik to Pune.";
+    //     if (question.includes("add bill")) return "Okay, bill for 500 kg tomatoes added successfully.";
+    //     if (question.includes("rate")) return "Current rates are Onions ₹20/kg, Potatoes ₹18/kg, Tomatoes ₹25/kg.";
+    //     if (question.includes("hello") || question.includes("hi")) return "Hello there! How can I assist you today?";
+    //     return "I’m not sure about that yet, but I’m learning every day!";
+    //   }
+
+    // sendBtn.addEventListener('click', () => {
+    //   const text = userInput.value.trim();
+    //   if (!text) return;
+    //   addMessage(text, 'user');
+    //   userInput.value = '';
+    //   const reply = getAIResponse(text);
+    //   setTimeout(() => { addMessage(reply, 'bot'); speak(reply); }, 600);
+    // });
+
+    // let recognition;
+    // if ('webkitSpeechRecognition' in window) {
+    //   recognition = new webkitSpeechRecognition();
+    //   recognition.lang = 'en-IN';
+    //   recognition.continuous = false;
+    //   recognition.interimResults = false;
+    //   voiceBtn.addEventListener('click', () => {
+    //     recognition.start();
+    //     voiceBtn.classList.add('text-red-600');
+    //   });
+    //   recognition.onresult = function (event) {
+    //     const transcript = event.results[0][0].transcript;
+    //     addMessage("🎙️ " + transcript, 'user');
+    //     const reply = getAIResponse(transcript);
+    //     setTimeout(() => { addMessage(reply, 'bot'); speak(reply); }, 600);
+    //     voiceBtn.classList.remove('text-red-600');
+    //   };
+    //   recognition.onerror = () => voiceBtn.classList.remove('text-red-600');
+    // } else {
+    //   voiceBtn.disabled = true;
+    //   voiceBtn.title = "Voice not supported in this browser.";
+    // }
+
+    const openBot = document.getElementById('openBot');
+    const closeBot = document.getElementById('closeBot');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatMessages = document.getElementById('chatMessages');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const voiceBtn = document.getElementById('voiceBtn');
+
+    openBot.onclick = () => chatWindow.classList.toggle('hidden');
+    closeBot.onclick = () => chatWindow.classList.add('hidden');
+
+    // आवाज (Text-to-Speech) सेटिंग
+    let hindiVoice = null;
+    function loadVoices() {
+        const voices = window.speechSynthesis.getVoices();
+        hindiVoice = voices.find(v => v.lang.includes('hi-IN')) || voices.find(v => v.lang.startsWith('hi'));
+    }
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+
+    // function speak(text) {
+    //     const plainText = text.replace(/<[^>]*>?/gm, ''); // HTML हटाकर सिर्फ टेक्स्ट बोलें
+    //     window.speechSynthesis.cancel();
+    //     const utterance = new SpeechSynthesisUtterance(plainText);
+    //     if (hindiVoice) utterance.voice = hindiVoice;
+    //     utterance.lang = 'hi-IN';
+    //     window.speechSynthesis.speak(utterance);
+    // }
+function speak(text) {
+    let plainText = text
+        .replace(/<br\s*\/?>/gi, '. ')   // pause after line breaks
+        .replace(/<\/p>/gi, '. ')
+        .replace(/<\/div>/gi, '. ')
+        .replace(/<[^>]*>?/gm, '');
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(plainText);
+
+    if (hindiVoice) utterance.voice = hindiVoice;
+    utterance.lang = 'hi-IN';
+    utterance.rate = 0.9;   // slower speech = better pauses
+
+    window.speechSynthesis.speak(utterance);
+}
+    function addMessage(content, sender = 'bot') {
+        const msgDiv = document.createElement('div');
+        if (sender === 'user') {
+            msgDiv.className = 'bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm self-end max-w-[85%] ml-auto shadow-sm';
+            msgDiv.textContent = content;
+        } else {
+            msgDiv.className = 'bg-white border-l-4 border-teal-500 p-3 rounded-lg text-sm max-w-[88%] shadow-md transition-all';
+            if (content.includes('<')) {
+                msgDiv.innerHTML = content;
+            } else {
+                msgDiv.textContent = content;
+            }
+        }
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function getAIResponse(text) {
+        const q = text.toLowerCase();
+
+        // 1. ड्राइवर और गाड़ी की जानकारी
+        if (q.includes("driver") || q.includes("ड्राइवर")) {
+            return `
+                <div class="flex items-center mb-2 text-teal-700 font-bold border-b pb-1">
+                    <i class="fas fa-id-card mr-2"></i> ड्राइवर की जानकारी
+                </div>
+                <div class="space-y-1 text-xs">
+                    <p><b>नाम:</b> Ayush Mandlecha</p>
+                    <p><b>वाहन नंबर:</b> MH-12-AB-1234</p>
+                    <p><b>स्थिति:</b> <span class="text-green-600 font-bold">ड्यूटी पर</span></p>
+                    <a href="tel:98XXXXXXXX" class="mt-2 block text-center bg-teal-50 text-teal-700 border border-teal-200 py-1 rounded hover:bg-teal-100">अभी कॉल करें</a>
+                </div>`;
+        }
+
+        // 2. बिल और हिसाब
+        if (q.includes("bill") || q.includes("बिल") || q.includes("हिसाब")) {
+            return `
+                <div class="flex items-center mb-2 text-teal-700 font-bold border-b pb-1">
+                    <i class="fas fa-file-invoice-dollar mr-2"></i> बिल का विवरण
+                </div>
+                <div class="text-xs space-y-1">
+                    <div class="flex justify-between"><span>माल:</span><b>प्याज (500 किलो)</b></div>
+                    <div class="flex justify-between"><span>भाव:</span><b>₹20/किलो</b></div>
+                    <div class="flex justify-between border-t pt-1 mt-1 text-teal-800 font-bold">
+                        <span>कुल राशि:</span><span>₹10,000</span>
+                    </div>
+                </div>`;
+        }
+
+        // 3. लाइव लोकेशन (Tracking)
+        if (q.includes("track") || q.includes("location") || q.includes("मेरी गाड़ी कहां पर है") || q.includes("रास्ता")) {
+            return `
+                <div class="flex items-center mb-2 text-teal-700 font-bold border-b pb-1">
+                    <i class="fas fa-truck mr-2"></i> गाड़ी की लोकेशन
+                </div>
+                <div class="text-xs">
+                    <p><b>अभी कहाँ है:</b> नासिक टोल के पास</p>
+                    <div class="w-full bg-gray-200 h-1.5 rounded-full my-2">
+                        <div class="bg-teal-500 h-1.5 rounded-full" style="width: 70%"></div>
+                    </div>
+                    <p class="text-[10px] text-gray-500">पुणे पहुंचने में 1 घंटा 15 मिनट शेष</p>
+                </div>`;
+        }
+
+        // 4. मंडी भाव
+        if (q.includes("rate") || q.includes("भाव") || q.includes("मंडी")) {
+    return `
+        <div class="font-bold text-teal-700 mb-2 border-b pb-1">
+            <i class="fas fa-chart-line mr-1"></i> आज का मंडी भाव
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+
+            <div class="bg-gray-50 p-2 rounded flex items-center">
+                <i class="fas fa-circle text-purple-500 mr-2"></i>
+                प्याज: <b class="ml-1">₹20</b>
+            </div>
+
+            <div class="bg-gray-50 p-2 rounded flex items-center">
+                <i class="fas fa-seedling text-green-600 mr-2"></i>
+                आलू: <b class="ml-1">₹18</b>
+            </div>
+
+            <div class="bg-gray-50 p-2 rounded flex items-center">
+                <i class="fas fa-apple-whole text-red-500 mr-2"></i>
+                टमाटर: <b class="ml-1">₹25</b>
+            </div>
+
+            <div class="bg-gray-50 p-2 rounded flex items-center">
+                <i class="fas fa-leaf text-green-500 mr-2"></i>
+                लहसुन: <b class="ml-1">₹140</b>
+            </div>
+
+        </div>`;
+}
+
+        if (q.includes("हेलो") || q.includes("hi") || q.includes("hello")) {
+            return "नमस्ते! मैं फ्लीट-बॉट हूँ। मैं आपकी गाड़ी ट्रैक करने या आज का मंडी भाव बताने में मदद कर सकता हूँ।";
+        }
+
+        return "क्षमा करें, मुझे इसके बारे में पता नहीं है। कृपया 'ड्राइवर का नाम' या 'गाड़ी की लोकेशन' पूछें।";
+    }
+
+    function handleInput() {
+        const text = userInput.value.trim();
+        if (!text) return;
+        addMessage(text, 'user');
+        userInput.value = '';
+        setTimeout(() => {
+            const reply = getAIResponse(text);
+            addMessage(reply, 'bot');
+            speak(reply);
+        }, 500);
+    }
+
+    sendBtn.onclick = handleInput;
+    userInput.onkeypress = (e) => { if(e.key === 'Enter') handleInput(); };
+
+    // हिंदी वॉइस रिकग्निशन
+    if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = 'hi-IN';
+        recognition.onstart = () => voiceBtn.classList.add('text-red-600', 'animate-pulse');
+        recognition.onend = () => voiceBtn.classList.remove('text-red-600', 'animate-pulse');
+        recognition.onresult = (e) => {
+            const transcript = e.results[0][0].transcript;
+            addMessage(transcript, 'user');
+            const reply = getAIResponse(transcript);
+            setTimeout(() => {
+                addMessage(reply, 'bot');
+                speak(reply);
+            }, 500);
+        };
+        voiceBtn.onclick = () => recognition.start();
+    }
+
+  </script>
+</body>
+</html>

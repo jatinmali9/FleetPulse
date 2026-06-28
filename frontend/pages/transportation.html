@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transportation Dashboard</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-start">
+  <!-- Header Section -->
+  <header class="w-full bg-gradient-to-r from-emerald-600 to-blue-600 text-white shadow">
+    <div class="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold tracking-tight">Transportation</h1>
+      <nav class="space-x-6 hidden md:flex">
+        <a href="#" class="hover:text-emerald-200 transition">Home</a>
+        <a href="#" class="hover:text-emerald-200 transition">Services</a>
+        <a href="frontend/support.html" class="hover:text-emerald-200 transition">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="w-full max-w-6xl px-6 py-12">
+    <section id="transportation">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800">
+          Transportation Services
+        </h2>
+        <p class="text-gray-500 mt-3 max-w-2xl mx-auto">
+          Streamline your logistics operations with smart tracking, automated billing, and efficient driver management.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Product Tracking -->
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-semibold text-emerald-700">Product Tracking</h3>
+            <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 3h18v4H3V3zM3 10h18v4H3v-4zM3 17h18v4H3v-4z"></path>
+            </svg>
+          </div>
+          <p class="text-gray-600 mt-3">
+            Real-time shipment tracking with optimized routing for maximum efficiency.
+          </p>
+        </div>
+
+        <!-- Billing System -->
+        <a href="../transbilling.html"
+           class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 block">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-semibold text-blue-700">Billing System</h3>
+            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 8c-1.1 0-2 .9-2 2h2V8zM12 8v2h2c0-1.1-.9-2-2-2zM12 14v2h-2c0-1.1.9-2 2-2zM12 14c1.1 0 2 .9 2 2h-2v-2z"></path>
+            </svg>
+          </div>
+          <p class="text-gray-600 mt-3">
+            Simplify your invoicing with automated billing and secure payments.
+          </p>
+        </a>
+
+        <!-- Driver Management -->
+        <a href="../Driver Reg Form.html"
+           class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 block">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-semibold text-indigo-700">Driver Management</h3>
+            <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 14l9-5-9-5-9 5 9 5zm0 0v7"></path>
+            </svg>
+          </div>
+          <p class="text-gray-600 mt-3">
+            Manage drivers, schedules, and payroll seamlessly from one dashboard.
+          </p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full bg-gray-900 text-gray-300 mt-12">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+      <p>&copy; 2025 Mahabhagwati Transport | All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

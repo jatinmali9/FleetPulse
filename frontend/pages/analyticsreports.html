@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fleet Overview | Fleet Pulse</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+    }
+
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+
+  <!-- Navbar -->
+  <nav class="bg-gradient-to-r from-teal-700 to-teal-500 text-white px-6 py-4 flex justify-between items-center shadow-md">
+    <a href="../index.html" class="flex items-center text-xl font-bold">
+      <i class="fas fa-satellite-dish mr-2"></i> Fleet Pulse
+    </a>
+    <div>
+      <a href="../index.html" class="hover:text-teal-100 mr-6">Home</a>
+      <a href="./fleet-overview.html" class="text-white font-semibold border-b-2 border-white pb-1">Fleet Overview</a>
+      <a href="./transportation.html" class="hover:text-teal-100 ml-6">Transportation</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative bg-[url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7')] bg-cover bg-center text-white py-28 px-6 text-center">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Fleet Overview Dashboard</h1>
+      <p class="text-lg text-gray-200 max-w-2xl mx-auto">
+        Monitor and analyze your fleet performance, drivers, and logistics operations with data-driven insights.
+      </p>
+      <a href="#dashboard" class="mt-8 inline-block bg-teal-500 hover:bg-teal-400 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all">
+        Explore Dashboard
+      </a>
+    </div>
+  </section>
+
+  <!-- Dashboard Overview -->
+  <section id="dashboard" class="py-16 px-6 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Fleet Insights</h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition card-hover">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-teal-100 text-teal-700 rounded-lg flex justify-center items-center mr-4">
+            <i class="fas fa-truck text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold">Active Vehicles</h3>
+        </div>
+        <p class="text-gray-600">Total operational trucks currently active in your network.</p>
+        <p id="vehicle-count" class="text-4xl font-bold text-teal-600 mt-4">0</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition card-hover">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-teal-100 text-teal-700 rounded-lg flex justify-center items-center mr-4">
+            <i class="fas fa-user-tie text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold">Active Drivers</h3>
+        </div>
+        <p class="text-gray-600">Total number of drivers on duty today.</p>
+        <p id="driver-count" class="text-4xl font-bold text-teal-600 mt-4">0</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition card-hover">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-teal-100 text-teal-700 rounded-lg flex justify-center items-center mr-4">
+            <i class="fas fa-road text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold">Trips Completed</h3>
+        </div>
+        <p class="text-gray-600">Successful deliveries completed this week.</p>
+        <p id="trip-count" class="text-4xl font-bold text-teal-600 mt-4">0</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chart Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">Fleet Performance</h2>
+      <canvas id="fleetChart" class="w-full max-w-4xl mx-auto"></canvas>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+    <p>© 2025 Fleet Pulse | Fleet Overview Module</p>
+  </footer>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    // Counter animation
+    function animateValue(id, start, end, duration) {
+      const obj = document.getElementById(id);
+      let startTime = null;
+
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        obj.textContent = Math.floor(progress * (end - start) + start);
+        if (progress < 1) window.requestAnimationFrame(step);
+      };
+
+      window.requestAnimationFrame(step);
+    }
+
+    window.onload = () => {
+      animateValue("vehicle-count", 0, 24, 1500);
+      animateValue("driver-count", 0, 18, 1500);
+      animateValue("trip-count", 0, 132, 1500);
+
+      // Fleet Performance Chart
+      const ctx = document.getElementById('fleetChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Trips Completed',
+            data: [12, 19, 14, 22, 18, 25, 20],
+            borderWidth: 3,
+            borderColor: '#0f766e',
+            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          },
+          plugins: {
+            legend: { display: true, labels: { color: '#0f766e' } }
+          }
+        }
+      });
+    };
+  </script>
+</body>
+</html>

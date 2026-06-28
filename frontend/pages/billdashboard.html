@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bill Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* SAME BACKGROUND */
+.gradient-bg {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.gradient-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    z-index: 0;
+}
+
+.navbar-shape {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 30px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.shape-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    right: 5%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+}
+
+.shape-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 10%;
+    left: 5%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+</style>
+</head>
+
+<body class="gradient-bg min-h-screen">
+
+<!-- Floating Shapes -->
+<div class="floating-shape shape-1"></div>
+<div class="floating-shape shape-2"></div>
+
+<!-- NAVBAR (SAME ICON) -->
+<header class="navbar-shape">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+
+            <!-- LEFT -->
+            <div class="flex items-center">
+                <div class="flex items-center">
+                    <div class="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center mr-3">
+                        <!-- 🔥 SAME LIGHTNING ICON -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-800">Fleet Pulse</h1>
+                </div>
+
+                <nav class="hidden md:ml-10 md:flex space-x-8">
+                    <a href="#" class="text-blue-600 font-semibold px-3 py-2 text-sm rounded-lg bg-blue-50">Enterprise</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm rounded-lg hover:bg-gray-100">Reports</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm rounded-lg hover:bg-gray-100">Settings</a>
+                </nav>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="flex items-center space-x-4">
+
+    <!-- 🔔 SAME BELL ICON -->
+    <button class="text-gray-600 hover:text-blue-600 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             class="h-6 w-6" 
+             fill="none" 
+             viewBox="0 0 24 24" 
+             stroke="currentColor">
+            <path stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2" 
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+    </button>
+
+    <!-- PROFILE -->
+    <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-md">
+        <span class="text-white font-semibold">JD</span>
+    </div>
+
+</div>
+
+        </div>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="content-wrapper max-w-7xl mx-auto px-4 py-12">
+
+    <!-- HEADER TEXT -->
+    <div class="mb-16 text-center">
+        <h1 class="text-4xl font-bold text-white mb-4">📊 Bill Dashboard</h1>
+        <p class="text-lg text-blue-100 max-w-2xl mx-auto">
+            Manage your bills, track transactions and generate invoices efficiently
+        </p>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+
+        <!-- TOP BAR -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">All Bills</h2>
+
+            <button onclick="goToBill()" class="btn-primary text-white px-4 py-2 rounded-lg">
+                ➕ Add New Bill
+            </button>
+        </div>
+
+        <!-- TABLE -->
+        <div class="overflow-x-auto">
+            <table class="w-full">
+
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-3">नंबर</th>
+                        <th class="p-3">तारीख</th>
+                        <th class="p-3">शेतकरी</th>
+                        <th class="p-3">खरेदीदार</th>
+                        <th class="p-3">एकूण</th>
+                        <th class="p-3">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bill-table" class="text-center"></tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+function goToBill() {
+    window.location.href = "enterprisebill.html";
+}
+
+async function loadBills() {
+    const res = await fetch("/api/bill/all");
+    const data = await res.json();
+
+    const table = document.getElementById("bill-table");
+    table.innerHTML = "";
+
+    if (data.length === 0) {
+        table.innerHTML = `<tr><td colspan="6" class="p-5 text-gray-400">No Bills Found</td></tr>`;
+        return;
+    }
+
+    data.forEach(bill => {
+        table.innerHTML += `
+            <tr class="border-t hover:bg-gray-50">
+                <td class="p-3 font-semibold">${bill.number}</td>
+                <td class="p-3">${bill.date}</td>
+                <td class="p-3">${bill.farmer}</td>
+                <td class="p-3">${bill.buyer}</td>
+                <td class="p-3 font-semibold text-green-600">₹${bill.finalAmount}</td>
+                <td class="p-3 space-x-2">
+
+    <button onclick="viewBill('${bill._id}')" 
+        class="bg-blue-500 text-white px-3 py-1 rounded">
+        View
+    </button>
+
+    <button onclick="editBill('${bill._id}')" 
+        class="bg-yellow-500 text-white px-3 py-1 rounded">
+        Edit
+    </button>
+
+    <button onclick="deleteBill('${bill._id}')" 
+        class="bg-red-500 text-white px-3 py-1 rounded">
+        Delete
+    </button>
+
+</td>
+            </tr>
+        `;
+    });
+}
+
+loadBills();
+
+function viewBill(id) {
+    window.location.href = `enterprisebill.html?id=${id}`;
+}
+
+function editBill(id) {
+
+    const pass = prompt("Enter password to edit:");
+
+    if (pass !== "admin123") {
+        alert("Wrong password");
+        return;
+    }
+
+    // 🔥 Redirect to bill in EDIT MODE
+    window.location.href = `enterprisebill.html?id=${id}&edit=true`;
+}
+
+
+async function deleteBill(id) {
+
+    const pass = prompt("Enter password to delete:");
+
+    if (pass !== "admin123") {
+        alert("Wrong password");
+        return;
+    }
+
+    if (!confirm("Delete this bill?")) return;
+
+    await fetch(`/api/bill/${id}`, {
+        method: "DELETE"
+    });
+
+    alert("Deleted successfully");
+    loadBills(); // refresh table
+}
+</script>
+
+</body>
+</html>

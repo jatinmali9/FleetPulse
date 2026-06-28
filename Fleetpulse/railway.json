@@ -1,0 +1,17 @@
+{
+  "build": {
+    "builder": "nixpacks"
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "startCommand": "cd backend && npm start",
+    "healthchecks": {
+      "requests": [
+        {
+          "path": "/",
+          "intervalSeconds": 10
+        }
+      ]
+    }
+  }
+}

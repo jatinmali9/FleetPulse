@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Smart Transport Dashboard</title>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+      border-radius: 16px;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="grid grid-cols-12 grid-rows-6 gap-4 h-screen p-4">
+
+    <!-- HEADER -->
+    <div class="col-span-12 glass rounded-2xl p-4 flex justify-between items-center shadow-lg">
+      <h1 class="text-2xl font-bold tracking-wide text-teal-400">
+        🚚  Transport Dashboard
+      </h1>
+
+      <button onclick="openForm()"
+        class="bg-teal-500 hover:bg-teal-400 transition px-5 py-2 rounded-xl font-semibold shadow-lg">
+        + Add Vehicle
+      </button>
+    </div>
+
+    <!-- STATS -->
+    <div class="col-span-3 glass p-4 rounded-2xl hover:scale-105 transition">
+      <h3 class="text-gray-300">Total Vehicles</h3>
+      <p id="totalVehicles" class="text-3xl font-bold text-teal-400 mt-2">0</p>
+    </div>
+
+    <div class="col-span-3 glass p-4 rounded-2xl hover:scale-105 transition">
+      <h3 class="text-gray-300">Active Trips</h3>
+      <p class="text-3xl font-bold text-green-400 mt-2">0</p>
+    </div>
+
+    <div class="col-span-3 glass p-4 rounded-2xl hover:scale-105 transition">
+      <h3 class="text-gray-300">Idle Drivers</h3>
+      <p class="text-3xl font-bold text-yellow-400 mt-2">0</p>
+    </div>
+
+    <div class="col-span-3 glass p-4 rounded-2xl hover:scale-105 transition">
+      <h3 class="text-gray-300">Completed Trips</h3>
+      <p class="text-3xl font-bold text-blue-400 mt-2">0</p>
+    </div>
+
+    <!-- LEFT PANEL -->
+    <div class="col-span-3 row-span-4 glass p-4 rounded-2xl overflow-y-auto">
+      <h2 class="font-bold text-teal-400 mb-3 text-lg">🚛 Vehicles</h2>
+      <div id="tripList" class="space-y-1 text-sm"></div>
+    </div>
+
+    <!-- MAP -->
+    <div class="col-span-6 row-span-4 glass p-2 rounded-2xl shadow-xl">
+      <div id="map">Loading map...</div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="col-span-3 row-span-4 glass p-4 rounded-2xl overflow-y-auto">
+      <h2 class="font-bold text-teal-400 mb-3 text-lg">👨‍✈️ Drivers</h2>
+      <div id="driverList" class="space-y-1 text-sm"></div>
+    </div>
+
+  </div>
+
+  <!-- MODAL -->
+  <div id="formModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+
+    <div class="glass p-6 rounded-2xl w-96 shadow-xl">
+
+      <h2 class="text-xl font-bold mb-4 text-teal-400">Add Vehicle</h2>
+
+      <input id="vehicleNo" placeholder="Vehicle Number"
+        class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-gray-600 focus:outline-none">
+
+      <input id="driverName" placeholder="Driver Name"
+        class="w-full p-3 mb-4 rounded-lg bg-slate-800 border border-gray-600 focus:outline-none">
+
+      <button onclick="addVehicle()" class="bg-teal-500 hover:bg-teal-400 w-full py-2 rounded-lg font-semibold">
+        Add Vehicle
+      </button>
+
+      <button onclick="closeForm()" class="mt-3 w-full text-gray-400 hover:text-white">
+        Cancel
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+
+    const tripList = document.getElementById("tripList");
+    const driverList = document.getElementById("driverList");
+    const totalVehicles = document.getElementById("totalVehicles");
+    let map;
+    let markers = [];
+
+
+    ((g) => {
+      var h, a, k,
+        p = "AIzaSyBcR7HJNTuDbz1vFM4WvtOsvnuGRzSo9cg",
+        c = "google", l = "importLibrary",
+        q = "__ib__", m = document, b = window;
+
+      b = b[c] || (b[c] = {});  
+      var d = b.maps || (b.maps = {}), r = new Set(), e = new URLSearchParams();
+
+      const u = () =>
+        h || (h = new Promise(async (f, n) => {
+          a = m.createElement("script");
+          e.set("key", p);
+          e.set("libraries", [...r] + "");
+
+          for (k in g)
+            e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+
+          e.set("callback", c + ".maps." + q);
+
+          a.src = `https://maps.googleapis.com/maps/api/js?` + e;
+
+          d[q] = f;
+          a.onerror = () => n(Error("Google Maps failed"));
+
+          m.head.append(a);
+        }));
+
+      d[l]
+        ? console.warn("Already loaded")
+        : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
+
+    })({ v: "weekly" });
+
+    async function initMap() {
+      const { Map } = await google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+      navigator.geolocation.getCurrentPosition((pos) => {
+
+        const loc = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+
+        map = new Map(document.getElementById("map"), {
+          zoom: 12,
+          center: loc
+        });
+
+        new google.maps.marker.AdvancedMarkerElement({
+          map: map,
+          position: loc
+        });
+
+        // 🔥 LOAD DATA AFTER MAP READY
+        loadVehicles();
+      });
+    }
+    function openForm() {
+      formModal.classList.remove("hidden");
+    }
+
+    function closeForm() {
+      formModal.classList.add("hidden");
+    }
+
+    async function addVehicle() {
+
+      let v = vehicleNo.value;
+      let d = driverName.value;
+
+      if (!v || !d) return alert("Fill all fields");
+
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+
+        const data = {
+          vehicleNo: v,
+          driverName: d,
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        };
+
+        // 🔥 SAVE TO DATABASE
+        await fetch("/api/vehicle/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        // 🔥 RELOAD FROM DB
+
+        map.setCenter({ lat: data.lat, lng: data.lng });
+        map.setZoom(14);
+      });
+
+      closeForm();
+    }
+    function createMarker(vehicleNo, driver, position) {
+
+      const marker = new google.maps.marker.AdvancedMarkerElement({
+        map: map,
+        position: position
+      });
+
+      markers.push(marker);
+
+      // VEHICLE LIST
+      const vDiv = document.createElement("div");
+      vDiv.className = "py-2 border-b border-gray-700 text-white";
+      vDiv.innerText = vehicleNo;
+      tripList.appendChild(vDiv);
+
+      // DRIVER LIST
+      const dDiv = document.createElement("div");
+      dDiv.className = "py-2 border-b border-gray-700 text-white";
+      dDiv.innerText = driver;
+      driverList.appendChild(dDiv);
+    }
+    initMap();
+
+    async function loadVehicles() {
+
+      try {
+        const res = await fetch("/api/vehicle/all");
+        const data = await res.json();
+
+        console.log("DATA:", data); // 🔥 debug
+
+        // CLEAR UI
+        tripList.innerHTML = "";
+        driverList.innerHTML = "";
+
+        // SET COUNT
+        totalVehicles.innerText = data.length;
+
+        // REMOVE OLD MARKERS
+        markers.forEach(m => m.map = null);
+        markers = [];
+
+        // ADD DATA
+        data.forEach(v => {
+          createMarker(v.vehicleNo, v.driverName, {
+            lat: v.lat,
+            lng: v.lng
+          });
+        });
+
+      } catch (err) {
+        console.error("ERROR:", err);
+      }
+    }
+    loadVehicles();
+  </script>
+
+</body>
+
+</html>

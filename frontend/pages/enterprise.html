@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            z-index: 0;
+        }
+        .navbar-shape {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            right: 5%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+        }
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 10%;
+            left: 5%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Floating Background Shapes -->
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    
+    <!-- Header with Unique Navbar Shape -->
+    <header class="navbar-shape">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800">AgriFleet</h1>
+                    </div>
+                    <nav class="hidden md:ml-10 md:flex space-x-8">
+                        <a href="#" class="text-blue-600 font-semibold px-3 py-2 text-sm rounded-lg bg-blue-50">Enterprise</a>
+                        <a href="#" class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors">Reports</a>
+                        <a href="../support.html" class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors">Settings</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                    </button>
+                    <div class="flex-shrink-0">
+                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-md">
+                            <span class="text-white font-semibold">JD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="content-wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Page Header -->
+        <div class="mb-16 text-center">
+            <h1 class="text-4xl font-bold text-white mb-4">Enterprise Management</h1>
+            <p class="text-lg text-blue-100 max-w-2xl mx-auto">Streamline your agricultural operations with our comprehensive enterprise management tools</p>
+        </div>
+
+        <!-- Enterprise Modules Section -->
+        <section id="enterprise" class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Farmer Details Card -->
+                <a href="../farmer-dashboard.html" class="block bg-white p-8 rounded-2xl shadow-lg card-hover border border-gray-100 hover:border-blue-300 transition-all duration-300">
+                    <div class="flex items-start mb-6">
+                        <div class="h-14 w-14 rounded-xl bg-gradient-to-r from-blue-100 to-blue-200 flex items-center justify-center mr-4 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Farmer Details</h3>
+                    </div>
+                    <p class="text-gray-600 mt-2">
+                        Maintain detailed records of farmers and products for logistics, track farmer information, and manage product inventory efficiently.
+                    </p>
+                    <div class="mt-6 flex items-center text-blue-600 font-medium">
+                        <span>Manage farmers</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
+                
+                <!-- Billing System Card -->
+                <a href="../billdashboard.html" class="block bg-white p-8 rounded-2xl shadow-lg card-hover border border-gray-100 hover:border-blue-300 transition-all duration-300">
+                    <div class="flex items-start mb-6">
+                        <div class="h-14 w-14 rounded-xl bg-gradient-to-r from-green-100 to-green-200 flex items-center justify-center mr-4 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Billing System</h3>
+                    </div>
+                    <p class="text-gray-600 mt-2">
+                        Automated invoicing and billing for hassle-free operations. Generate invoices, track payments, and manage financial records.
+                    </p>
+                    <div class="mt-6 flex items-center text-blue-600 font-medium">
+                        <span>Process invoices</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
+                
+                <!-- Analytics Card -->
+                <!-- KHATABOOK CARD -->
+<a href="#"
+onclick="openKhata()"
+class="block bg-white p-8 rounded-2xl shadow-lg card-hover border border-gray-100 hover:border-blue-300 transition-all duration-300">
+
+    <div class="flex items-start mb-6">
+
+        <div class="h-14 w-14 rounded-xl bg-gradient-to-r from-green-100 to-green-200 flex items-center justify-center mr-4 shadow-sm">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+            </svg>
+
+        </div>
+
+        <h3 class="text-xl font-semibold text-gray-900">
+            Khata Book
+        </h3>
+
+    </div>
+
+    <p class="text-gray-600 mt-2">
+        Manage customer khata, track credits & debits,
+        maintain payment history, and handle daily ledger
+        records digitally with smart business insights.
+    </p>
+
+    <div class="mt-6 flex items-center text-blue-600 font-medium">
+
+        <span>Open KhataBook</span>
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 ml-2"
+            viewBox="0 0 20 20"
+            fill="currentColor">
+
+            <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+        </svg>
+
+    </div>
+
+</a>
+                <!-- <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                    <div class="flex items-start mb-6">
+                        <div class="h-14 w-14 rounded-xl bg-gradient-to-r from-purple-100 to-purple-200 flex items-center justify-center mr-4 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Analytics</h3>
+                    </div>
+                    <p class="text-gray-600 mt-2">
+                        Get detailed reports on fleet utilization, performance metrics, and operational insights to optimize your agricultural enterprise.
+                    </p>
+                    <div class="mt-6">
+                        <button class="text-blue-600 font-medium flex items-center">
+                            <span>View reports</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+        </section>
+
+        <!-- Additional Information Section -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Streamline Your Agricultural Operations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Efficient Management</h3>
+                    <p class="text-gray-600 mb-4">
+                        Our enterprise tools help you manage farmer relationships, streamline billing processes, and gain valuable insights through analytics.
+                    </p>
+                    <ul class="text-gray-600 list-disc pl-5 space-y-2">
+                        <li>Track farmer information and product details</li>
+                        <li>Automate billing and invoicing processes</li>
+                        <li>Analyze performance metrics and trends</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Benefits</h3>
+                    <ul class="text-gray-600 list-disc pl-5 space-y-2">
+                        <li>Reduce administrative overhead</li>
+                        <li>Improve operational efficiency</li>
+                        <li>Make data-driven decisions</li>
+                        <li>Enhance farmer relationships</li>
+                        <li>Streamline financial processes</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:justify-start">
+                    <p class="text-sm text-gray-500">© 2023 AgriEnterprise. All rights reserved.</p>
+                </div>
+                <div class="mt-4 flex justify-center md:mt-0 space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-gray-500 transition-colors">
+                        <span class="sr-only">Privacy Policy</span>
+                        Privacy
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500 transition-colors">
+                        <span class="sr-only">Terms of Service</span>
+                        Terms
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500 transition-colors">
+                        <span class="sr-only">Contact</span>
+                        Contact
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script>
+
+function openKhata() {
+
+    // 🔥 GET TOKEN
+    const token =
+        localStorage.getItem("token");
+
+    // ✅ IF LOGGED IN
+    if (token &&
+        token !== "undefined" &&
+        token !== "null") {
+
+        window.location.href =
+            "../khata.html";
+    }
+
+    // ❌ NOT LOGGED IN
+    else {
+
+        window.location.href =
+            "../login.html";
+    }
+}
+
+</script>
+</html>

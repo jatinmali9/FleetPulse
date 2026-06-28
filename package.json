@@ -1,0 +1,13 @@
+{
+  "name": "fleetpulse",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd backend && nodemon server.js",
+    "start": "cd backend && node server.js",
+    "backend:install": "cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
