@@ -592,466 +592,550 @@
 </div>
 
 <script>
+// =======================================
+// GLOBAL VARIABLES
+// =======================================
+
 const params = new URLSearchParams(window.location.search);
 
 const billId = params.get("id");
-
 const isEdit = params.get("edit");
-    
-function updateTime() {
+
+let isSaved = false;
+
+
+// =======================================
+// DATE & TIME
+// =======================================
+
+function updateDateTime() {
+
     const now = new Date();
 
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
+    document.getElementById("invoice-date").value =
+        now.toISOString().split("T")[0];
 
-    if (minutes < 10) minutes = "0" + minutes;
+    document.getElementById("current-time").value =
+        now.toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
 
-    document.getElementById("current-time").value = hours + ":" + minutes;
 }
 
-// run first time
-updateTime();
 
-// 🔥 update every 1 second
-setInterval(updateTime, 1000);
+// =======================================
+// ADD ROW
+// =======================================
+
+function addRow(data = {}) {
+
+    const tbody =
+        document.getElementById("item-list");
+
+    const row =
+        document.createElement("tr");
+
+    row.className = "item-row";
+
+    row.innerHTML = `
+
+        <td>
+            <input class="item-type border rounded p-2 w-full"
+                value="${data.type || ""}">
+        </td>
+
+        <td>
+            <input type="number"
+                class="item-jaali border rounded p-2 w-full"
+                value="${data.jaali || ""}">
+        </td>
+
+        <td>
+            <input type="number"
+                class="item-kilo border rounded p-2 w-full"
+                value="${data.kilo || ""}">
+        </td>
+
+        <td>
+            <input type="number"
+                class="item-rate border rounded p-2 w-full"
+                value="${data.rate || ""}">
+        </td>
+
+        <td>
+            <input type="number"
+                readonly
+                class="item-amount bg-gray-100 border rounded p-2 w-full"
+                value="${data.amount || 0}">
+        </td>
+
+        <td>
+
+            <button
+                class="delete-row-btn bg-red-500 text-white px-3 py-2 rounded">
+
+                Delete
+
+            </button>
+
+        </td>
+
+    `;
+
+    tbody.appendChild(row);
 
 
+    row.querySelector(".delete-row-btn")
+        .addEventListener("click", () => {
 
-document.addEventListener('DOMContentLoaded', () => {
-    const itemList = document.getElementById('item-list');
-    const addRowBtn = document.getElementById('add-row-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const printBtn = document.getElementById('print-btn');
+            row.remove();
 
-    // --- Auto Increment Invoice Number ---
-    
-    // --- Default Date & Time ---
-    
-
-    // --- Add Row ---
-    function addRow() {
-        const tr = document.createElement('tr');
-        tr.classList.add('item-row');
-        tr.innerHTML = `
-            <td><input type="text" class="item-type" placeholder="उदा. टोमॅटो" required></td>
-            <td><input type="number" class="item-jaali" placeholder="0" min="0" required></td>
-            <td><input type="number" class="item-kilo" placeholder="0.00" min="0" step="0.01"></td>
-            <td><input type="number" class="item-rate" placeholder="0.00" min="0" step="0.01" required></td>
-            <td><input type="text" class="item-amount" readonly ></td>
-            <td><button class="delete-row-btn">X</button></td>`;
-        itemList.appendChild(tr);
-        
-        // Add event listeners to new inputs
-        tr.querySelector('.item-jaali').addEventListener('input', calculateTotals);
-        tr.querySelector('.item-kilo').addEventListener('input', calculateTotals);
-        tr.querySelector('.item-rate').addEventListener('input', calculateTotals);
-        
-        // Focus on the new item type input
-        tr.querySelector('.item-type').focus();
-    }
-
-    function deleteRow(btn) {
-        if (itemList.querySelectorAll('.item-row').length > 1) {
-            btn.closest('tr').remove();
             calculateTotals();
-        } else {
-            alert('किमान एक आयटम असणे आवश्यक आहे');
-        }
-    }
 
-    
-    function calculateTotals() {
-    let subtotal = 0;
+        });
+
+
+    row.querySelector(".item-kilo")
+        .addEventListener("input", calculateTotals);
+
+    row.querySelector(".item-rate")
+        .addEventListener("input", calculateTotals);
+
+    row.querySelector(".item-jaali")
+        .addEventListener("input", calculateTotals);
+
+}
+
+
+// =======================================
+// CALCULATE TOTALS
+// =======================================
+
+function calculateTotals() {
+
     let totalJaali = 0;
 
-    itemList.querySelectorAll('.item-row').forEach(row => {
-        const jaali = parseFloat(row.querySelector('.item-jaali').value) || 0;
-        const kilo = parseFloat(row.querySelector('.item-kilo').value) || 0;
-        const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+    let totalAmount = 0;
 
-        const amount = (jaali * rate) + ((kilo / 20) * rate);
 
-        row.querySelector('.item-amount').value = amount.toFixed(2);
+    document.querySelectorAll(".item-row")
+        .forEach(row => {
 
-        subtotal += amount;
-        totalJaali += jaali;
-    });
+            const jaali =
+                Number(row.querySelector(".item-jaali").value) || 0;
 
-    // 🔥 UPDATE TABLE FOOTER (THIS WAS MISSING)
-    document.getElementById('total-jaali').value = totalJaali;
-    document.getElementById('total-amount').value = subtotal.toFixed(2);
+            const kilo =
+                Number(row.querySelector(".item-kilo").value) || 0;
 
-    // 🔥 AUTO CALCULATE
-    const commission = totalJaali / 2;
-    const expenses = commission;
-    const finalAmount = subtotal - expenses;
+            const rate =
+                Number(row.querySelector(".item-rate").value) || 0;
 
-    // 🔥 UPDATE UI
-    document.getElementById('subtotal').value = subtotal.toFixed(2);
-    document.getElementById('commission').value = commission.toFixed(2);
-    document.getElementById('expenses').value = expenses.toFixed(2);
-    document.getElementById('final-amount').value = finalAmount.toFixed(2);
+            const amount =
+                kilo * rate;
+
+            row.querySelector(".item-amount").value =
+                amount.toFixed(2);
+
+            totalJaali += jaali;
+
+            totalAmount += amount;
+
+        });
+
+
+    document.getElementById("total-jaali").value =
+        totalJaali;
+
+    document.getElementById("total-amount").value =
+        totalAmount.toFixed(2);
+
+    document.getElementById("subtotal").value =
+        totalAmount.toFixed(2);
+
+
+    const commission =
+        Number(document.getElementById("commission").value) || 0;
+
+    const expenses =
+        Number(document.getElementById("expenses").value) || 0;
+
+
+    document.getElementById("final-amount").value =
+        (totalAmount - commission - expenses).toFixed(2);
+
 }
-    window.addRow = addRow;
-window.calculateTotals = calculateTotals;
-showNextNumber();
-    // --- Reset For
-    // m ---
-    function resetForm() {
-        if (confirm('तुम्हाला हा फॉर्म रिसेट करायचा आहे का?')) {
-            // Clear all inputs
-            document.querySelectorAll('input').forEach(input => {
-                if (input.type !== 'button' && !input.readOnly) {
-                    input.value = '';
-                }
-            });
-            
-            // Remove all but one item row
-            const rows = itemList.querySelectorAll('.item-row');
-            for (let i = 1; i < rows.length; i++) {
-                rows[i].remove();
-            }
-            
-            // Reset the first row
-            const firstRow = itemList.querySelector('.item-row');
-            if (firstRow) {
-                firstRow.querySelector('.item-type').value = '';
-                firstRow.querySelector('.item-jaali').value = '';
-                firstRow.querySelector('.item-kilo').value = '';
-                firstRow.querySelector('.item-rate').value = '';
-                firstRow.querySelector('.item-amount').value = '';
-            }
-            
-            // Update invoice number and date/time
-            
-            
-            
-            // Reset totals
-            document.getElementById('subtotal').value = '';
-            document.getElementById('total-deductions').value = '';
-            document.getElementById('final-amount').value = '';
-        }
-    }
 
-    // --- Print Invoice ---
-    let isSaved = false;  // ✅ GLOBAL (outside function)
-    async function printInvoice() {
-        if (isSaved) {
-        window.print(); // only print again
-        return;
-    }
 
+// =======================================
+// EVENTS
+// =======================================
+
+document.getElementById("commission")
+    .addEventListener("input", calculateTotals);
+
+document.getElementById("expenses")
+    .addEventListener("input", calculateTotals);
+
+// =======================================
+// SHOW NEXT BILL NUMBER
+// =======================================
+
+async function showNextNumber() {
 
     try {
 
-       
-const farmer = document.getElementById('farmer-name');
-const village = document.getElementById('farmer-village');
-const buyer = document.getElementById('buyer-name');
-const sauda = document.getElementById('sau-name');
+        const res =
+            await fetch("/api/bill/next-number");
 
-if (!farmer.value) {
-    farmer.focus();
-    farmer.style.border = "2px solid red";
-    alert("Enter farmer name");
-    return;
-}
-if (!sauda.value) {
-    sauda.focus();
-    sauda.style.border = "2px solid red";
-    alert("Enter sauda name");
-    return;
-}
+        const data =
+            await res.json();
 
-if (!village.value) {
-    village.focus();
-    village.style.border = "2px solid red";
-    alert("Enter village");
-    return;
-}
+        document.getElementById("invoice-no").value =
+            data.number;
 
-if (!buyer.value) {
-    buyer.focus();
-    buyer.style.border = "2px solid red";
-    alert("Enter buyer name");
-    return;
-}
-
-        // 🔥 ITEM VALIDATION
-        let valid = true;
-
-for (let i = 0; i < document.querySelectorAll('.item-row').length; i++) {
-
-    const row = document.querySelectorAll('.item-row')[i];
-
-    const type = row.querySelector('.item-type');
-    const jaali = row.querySelector('.item-jaali');
-    const rate = row.querySelector('.item-rate');
-
-    if (!type.value.trim()) {
-        type.focus();
-        type.style.border = "2px solid red";
-        alert(`Enter प्रकार in row ${i + 1}`);
-        valid = false;
-        break;
     }
 
-    if (!jaali.value) {
-        jaali.focus();
-        jaali.style.border = "2px solid red";
-        alert(`Enter जाळी in row ${i + 1}`);
-        valid = false;
-        break;
+    catch(err){
+
+        console.log(err);
+
     }
 
-    if (!rate.value) {
-        rate.focus();
-        rate.style.border = "2px solid red";
-        alert(`Enter भाव in row ${i + 1}`);
-        valid = false;
-        break;
-    }
 }
 
-if (!valid) return;
 
-        // 🔥 COLLECT DATA
+// =======================================
+// RESET FORM
+// =======================================
+
+function resetForm(){
+
+    if(!confirm("Reset Bill?")) return;
+
+    document.getElementById("farmer-name").value="";
+    document.getElementById("farmer-village").value="";
+    document.getElementById("buyer-name").value="";
+    document.getElementById("sau-name").value="";
+
+    document.getElementById("item-list").innerHTML="";
+
+    addRow();
+
+    document.getElementById("commission").value=0;
+    document.getElementById("expenses").value=0;
+
+    calculateTotals();
+
+}
+
+
+// =======================================
+// LOAD BILL
+// =======================================
+
+async function loadBill(id){
+
+    try{
+
+        const res =
+            await fetch(`/api/bill/${id}`);
+
+        const bill =
+            await res.json();
+
+        console.log(bill);
+
+        // BASIC INFO
+        document.getElementById("invoice-no").value =
+            bill.number;
+
+        document.getElementById("invoice-date").value =
+            bill.date;
+
+        document.getElementById("current-time").value =
+            bill.time || "";
+
+        document.getElementById("farmer-name").value =
+            bill.farmer;
+
+        document.getElementById("farmer-village").value =
+            bill.village;
+
+        document.getElementById("buyer-name").value =
+            bill.buyer;
+
+        document.getElementById("sau-name").value =
+            bill.sauda || "";
+
+
+
+        // ITEMS
+        const tbody =
+            document.getElementById("item-list");
+
+        tbody.innerHTML="";
+
+        bill.items.forEach(item=>{
+
+            addRow(item);
+
+        });
+
+
+
+        // TOTALS
+        document.getElementById("total-jaali").value =
+            bill.totalJaali || 0;
+
+        document.getElementById("total-amount").value =
+            bill.totalAmount || 0;
+
+        document.getElementById("subtotal").value =
+            bill.totalAmount || 0;
+
+        document.getElementById("commission").value =
+            bill.commission || 0;
+
+        document.getElementById("expenses").value =
+            bill.expenses || 0;
+
+        document.getElementById("final-amount").value =
+            bill.finalAmount || 0;
+
+
+
+        calculateTotals();
+
+
+
+        // VIEW MODE
+        if(!isEdit){
+
+            document.querySelectorAll("input")
+            .forEach(input=>{
+
+                input.readOnly=true;
+
+            });
+
+            document.querySelectorAll("select")
+            .forEach(select=>{
+
+                select.disabled=true;
+
+            });
+
+            const addBtn =
+                document.getElementById("add-row-btn");
+
+            if(addBtn)
+                addBtn.style.display="none";
+
+            const resetBtn =
+                document.getElementById("reset-btn");
+
+            if(resetBtn)
+                resetBtn.style.display="none";
+
+            document
+                .querySelectorAll(".delete-row-btn")
+                .forEach(btn=>{
+
+                    btn.style.display="none";
+
+                });
+
+            document.getElementById("print-btn")
+                .innerText="Print";
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Unable to load bill");
+
+    }
+
+}
+// =======================================
+// SAVE / UPDATE BILL
+// =======================================
+
+async function printInvoice() {
+
+    try {
+
         const items = [];
 
-        document.querySelectorAll('.item-row').forEach(row => {
+        document.querySelectorAll(".item-row").forEach(row => {
+
             items.push({
-                type: row.querySelector('.item-type').value,
-                jaali: row.querySelector('.item-jaali').value,
-                kilo: row.querySelector('.item-kilo').value,
-                rate: row.querySelector('.item-rate').value,
-                amount: row.querySelector('.item-amount').value
+
+                type: row.querySelector(".item-type").value,
+
+                jaali: Number(row.querySelector(".item-jaali").value) || 0,
+
+                kilo: Number(row.querySelector(".item-kilo").value) || 0,
+
+                rate: Number(row.querySelector(".item-rate").value) || 0,
+
+                amount: Number(row.querySelector(".item-amount").value) || 0
+
             });
+
         });
 
         const data = {
 
-    number: document.getElementById("invoice-no").value,
+            number: document.getElementById("invoice-no").value,
 
-    date: document.getElementById("invoice-date").value,
+            date: document.getElementById("invoice-date").value,
 
-    farmer: document.getElementById("farmer-name").value,
+            time: document.getElementById("current-time").value,
 
-    village: document.getElementById("farmer-village").value,
+            farmer: document.getElementById("farmer-name").value,
 
-    buyer: document.getElementById("buyer-name").value,
+            village: document.getElementById("farmer-village").value,
 
-    sauda: document.getElementById("sau-name").value,
+            buyer: document.getElementById("buyer-name").value,
 
-    items,
+            sauda: document.getElementById("sau-name").value,
 
-    totalJaali: document.getElementById("total-jaali").value,
+            items,
 
-    totalAmount: document.getElementById("total-amount").value,
+            totalJaali:
+                Number(document.getElementById("total-jaali").value) || 0,
 
-    commission: document.getElementById("commission").value,
+            totalAmount:
+                Number(document.getElementById("total-amount").value) || 0,
 
-    expenses: document.getElementById("expenses").value,
+            commission:
+                Number(document.getElementById("commission").value) || 0,
 
-    finalAmount: document.getElementById("final-amount").value
+            expenses:
+                Number(document.getElementById("expenses").value) || 0,
 
-};
+            finalAmount:
+                Number(document.getElementById("final-amount").value) || 0
 
-        console.log("DATA:", data);
+        };
 
-        // 🔥 SAVE TO DATABASE (IMPORTANT FIX)
+
+
+        // ================= VALIDATION =================
+
+        if (!data.farmer) {
+
+            alert("Enter Farmer Name");
+
+            return;
+
+        }
+
+        if (!data.buyer) {
+
+            alert("Enter Buyer Name");
+
+            return;
+
+        }
+
+        if (items.length === 0) {
+
+            alert("Add at least one item");
+
+            return;
+
+        }
+
+
+
+        // ================= SAVE OR UPDATE =================
+
         const url = billId
-    ? `/api/bill/${billId}`
-    : "/api/bill/save";
 
-const method = billId
-    ? "PUT"
-    : "POST";
+            ? `/api/bill/${billId}`
 
-const res = await fetch(url,{
+            : "/api/bill/save";
 
-    method,
+        const method = billId
 
-    headers:{
-        "Content-Type":"application/json"
-    },
+            ? "PUT"
 
-    body:JSON.stringify(data)
+            : "POST";
 
-});
 
-const result = await res.json();
 
-if(result.number){
-    document.getElementById("invoice-no").value=result.number;
-}
-    method,
+        const res = await fetch(url, {
 
-    headers: {
+            method,
 
-        "Content-Type": "application/json"
+            headers: {
 
-    },
+                "Content-Type": "application/json"
 
-    body: JSON.stringify(data)
+            },
 
-});
+            body: JSON.stringify(data)
+
+        });
+
+
 
         const result = await res.json();
-        document.getElementById("invoice-no").value = result.number;
-        console.log(result);
 
-        // 🔥 SUCCESS MESSAGE
-        alert("Data saved successfully");
-        isSaved = true;  // ✅ mark as saved
 
-document.getElementById("print-btn").innerText = "Reprint";
 
-        // 🔥 PRINT AFTER SAVE
+        if (!res.ok) {
+
+            alert(result.message);
+
+            return;
+
+        }
+
+
+
+        // NEW BILL
+
+        if (!billId && result.number) {
+
+            document.getElementById("invoice-no").value =
+
+                result.number;
+
+        }
+
+
+
+        isSaved = true;
+
+
+
+        alert(
+
+            billId
+
+                ? "Bill Updated Successfully"
+
+                : "Bill Saved Successfully"
+
+        );
+
+
+
+        document.getElementById("print-btn")
+
+            .innerText = "Reprint";
+
+
+
         window.print();
-
-    } catch (err) {
-        console.error(err);
-        alert("Error saving bill");
-    }
-}
-
-    // --- Event Listeners ---
-    addRowBtn.addEventListener('click', addRow);
-    
-    resetBtn.addEventListener('click', resetForm);
-    
-    printBtn.addEventListener('click', printInvoice);
-    
-    itemList.addEventListener('click', e => {
-        if (e.target.classList.contains('delete-row-btn')) {
-            deleteRow(e.target);
-        }
-    });
-    
-    
-    
-    document.querySelectorAll('.total-calc').forEach(input => {
-        input.addEventListener('input', calculateTotals);
-    });
-
-    // --- Initialize ---
-    
-    
-    
-    if(!billId){
-
-    addRow();
-
-} // Add one initial row
-});
-
-async function showNextNumber() {
-  try {
-    const res = await fetch("/api/bill/next-number");
-    const data = await res.json();
-
-    document.getElementById("invoice-no").value = data.number;
-
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const today = new Date().toISOString().split('T')[0];
-
-    document.getElementById("invoice-date").value = today;
-
-});
-
-document.addEventListener('input', function(e) {
-    if (e.target.tagName === "INPUT") {
-        e.target.style.border = "";
-    }
-});
-// call on page load
-
-    async function loadBill(id) {
-
-    try {
-
-        const res = await fetch(`/api/bill/${id}`);
-
-        const bill = await res.json();
-
-        console.log(bill);
-
-        // BASIC DETAILS
-        document.getElementById("invoice-no").value = bill.number;
-        document.getElementById("invoice-date").value = bill.date;
-        document.getElementById("farmer-name").value = bill.farmer;
-        document.getElementById("farmer-village").value = bill.village;
-        document.getElementById("buyer-name").value = bill.buyer;
-        document.getElementById("sau-name").value = bill.sauda || "";
-
-        const tbody = document.getElementById("item-list");
-
-        tbody.innerHTML = "";
-
-        bill.items.forEach((item,index)=>{
-
-    addRow();
-
-    const row=
-        tbody.children[index];
-
-    row.querySelector(".item-type").value=item.type;
-    row.querySelector(".item-jaali").value=item.jaali;
-    row.querySelector(".item-kilo").value=item.kilo;
-    row.querySelector(".item-rate").value=item.rate;
-    row.querySelector(".item-amount").value=item.amount;
-
-});
-
-        document.getElementById("total-jaali").value=
-bill.totalJaali;
-
-document.getElementById("total-amount").value=
-bill.totalAmount;
-
-document.getElementById("subtotal").value=
-bill.totalAmount;
-
-document.getElementById("commission").value=
-bill.commission;
-
-document.getElementById("expenses").value=
-bill.expenses;
-
-document.getElementById("final-amount").value=
-bill.finalAmount;
-
-        // LOAD SAVED TOTALS
-       
-
-        // VIEW MODE
-        if (!isEdit) {
-
-            document.querySelectorAll("input").forEach(input=>{
-
-    input.readOnly=true;
-
-});
-
-document.getElementById("print-btn").innerHTML="Print";
-
-document.getElementById("reset-btn").style.display="none";
-
-document.getElementById("add-row-btn").style.display="none";
-
-document.querySelectorAll(".delete-row-btn").forEach(btn=>{
-
-    btn.style.display="none";
-
-});
-
-        }
 
     }
 
@@ -1059,30 +1143,167 @@ document.querySelectorAll(".delete-row-btn").forEach(btn=>{
 
         console.error(err);
 
-        alert("Unable to load bill");
+        alert("Failed to save bill");
 
     }
 
 }
-    
-    if(billId){
+// =======================================
+// INITIALIZATION
+// =======================================
 
-    loadBill(billId);
+window.onload = async function () {
 
-        if(isEdit){
+    updateDateTime();
 
-    document.querySelectorAll("input").forEach(input=>{
+    // NEW BILL
+    if (!billId) {
 
-        input.readOnly=false;
+        await showNextNumber();
+
+        addRow();
+
+        calculateTotals();
+
+    }
+
+    // VIEW / EDIT BILL
+    else {
+
+        await loadBill(billId);
+
+        if (isEdit) {
+
+            // Enable editing
+            document.querySelectorAll("input").forEach(input => {
+
+                input.readOnly = false;
+
+            });
+
+            document.querySelectorAll("select").forEach(select => {
+
+                select.disabled = false;
+
+            });
+
+            // Invoice number should never change
+            document.getElementById("invoice-no").readOnly = true;
+
+            document.getElementById("print-btn").innerHTML =
+                "Update Bill";
+
+            const addBtn =
+                document.getElementById("add-row-btn");
+
+            if (addBtn)
+                addBtn.style.display = "inline-flex";
+
+            const resetBtn =
+                document.getElementById("reset-btn");
+
+            if (resetBtn)
+                resetBtn.style.display = "inline-flex";
+
+            document.querySelectorAll(".delete-row-btn")
+                .forEach(btn => {
+
+                    btn.style.display = "inline-flex";
+
+                });
+
+        }
+
+        else {
+
+            // VIEW MODE
+            document.getElementById("print-btn")
+                .innerHTML = "Print";
+
+        }
+
+    }
+
+};
+
+
+// =======================================
+// BUTTON EVENTS
+// =======================================
+
+const addBtn =
+    document.getElementById("add-row-btn");
+
+if (addBtn) {
+
+    addBtn.addEventListener("click", function () {
+
+        addRow();
 
     });
 
-    document.getElementById("invoice-no").readOnly=true;
+}
+
+
+const printBtn =
+    document.getElementById("print-btn");
+
+if (printBtn) {
+
+    printBtn.addEventListener("click", function () {
+
+        printInvoice();
+
+    });
 
 }
 
+
+const resetBtn =
+    document.getElementById("reset-btn");
+
+if (resetBtn) {
+
+    resetBtn.addEventListener("click", function () {
+
+        resetForm();
+
+    });
+
 }
 
+
+// =======================================
+// AUTO UPDATE TIME
+// =======================================
+
+setInterval(() => {
+
+    if (!billId) {
+
+        updateDateTime();
+
+    }
+
+}, 60000);
+
+
+// =======================================
+// BEFORE UNLOAD WARNING
+// =======================================
+
+window.addEventListener("beforeunload", function (e) {
+
+    if (!isSaved && isEdit) {
+
+        e.preventDefault();
+
+        e.returnValue = "";
+
+    }
+
+});
+    
 </script>
 </body>
 </html>
