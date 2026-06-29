@@ -592,7 +592,11 @@
 </div>
 
 <script>
+const params = new URLSearchParams(window.location.search);
 
+const billId = params.get("id");
+
+const isEdit = params.get("edit");
     
 function updateTime() {
     const now = new Date();
@@ -918,6 +922,61 @@ document.addEventListener('input', function(e) {
     }
 });
 // call on page load
+
+    async function loadBill(id) {
+
+    try {
+
+        const res = await fetch(`/api/bill/${id}`);
+
+        const bill = await res.json();
+
+        // BASIC DETAILS
+        document.getElementById("invoice-no").value = bill.number;
+        document.getElementById("invoice-date").value = bill.date;
+        document.getElementById("farmer-name").value = bill.farmer;
+        document.getElementById("farmer-village").value = bill.village;
+        document.getElementById("buyer-name").value = bill.buyer;
+
+        if(document.getElementById("sau-name"))
+            document.getElementById("sau-name").value = bill.sauda || "";
+
+        // REMOVE DEFAULT ROWS
+        document.getElementById("item-list").innerHTML = "";
+
+        // ADD SAVED ITEMS
+        bill.items.forEach(item=>{
+
+            addRow();
+
+            const row =
+                document.querySelector("#item-list tr:last-child");
+
+            row.querySelector(".item-type").value = item.type;
+            row.querySelector(".item-jaali").value = item.jaali;
+            row.querySelector(".item-kilo").value = item.kilo;
+            row.querySelector(".item-rate").value = item.rate;
+            row.querySelector(".item-amount").value = item.amount;
+
+        });
+
+        calculateTotals();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Unable to load bill");
+    }
+
+}
+    if(billId){
+
+    loadBill(billId);
+
+}
 
 </script>
 </body>
