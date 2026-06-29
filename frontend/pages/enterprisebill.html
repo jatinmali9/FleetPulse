@@ -692,6 +692,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('expenses').value = expenses.toFixed(2);
     document.getElementById('final-amount').value = finalAmount.toFixed(2);
 }
+    window.addRow = addRow;
+window.calculateTotals = calculateTotals;
 showNextNumber();
     // --- Reset For
     // m ---
@@ -827,29 +829,72 @@ if (!valid) return;
         });
 
         const data = {
-            number: document.getElementById('invoice-no').value,
-            date: document.getElementById('invoice-date').value,
-            farmer: document.getElementById('farmer-name').value,
-            village: document.getElementById('farmer-village').value,
-            buyer: document.getElementById('buyer-name').value,
-            items: items,
-            totalJaali: document.getElementById('total-jaali').value,
-            totalAmount: document.getElementById('total-amount').value,
-            commission: document.getElementById('commission').value,
-            expenses: document.getElementById('expenses').value,
-            finalAmount: document.getElementById('final-amount').value
-        };
+
+    number: document.getElementById("invoice-no").value,
+
+    date: document.getElementById("invoice-date").value,
+
+    farmer: document.getElementById("farmer-name").value,
+
+    village: document.getElementById("farmer-village").value,
+
+    buyer: document.getElementById("buyer-name").value,
+
+    sauda: document.getElementById("sau-name").value,
+
+    items,
+
+    totalJaali: document.getElementById("total-jaali").value,
+
+    totalAmount: document.getElementById("total-amount").value,
+
+    commission: document.getElementById("commission").value,
+
+    expenses: document.getElementById("expenses").value,
+
+    finalAmount: document.getElementById("final-amount").value
+
+};
 
         console.log("DATA:", data);
 
         // 🔥 SAVE TO DATABASE (IMPORTANT FIX)
-        const res = await fetch("/api/bill/save", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
+        const url = billId
+    ? `/api/bill/${billId}`
+    : "/api/bill/save";
+
+const method = billId
+    ? "PUT"
+    : "POST";
+
+const res = await fetch(url,{
+
+    method,
+
+    headers:{
+        "Content-Type":"application/json"
+    },
+
+    body:JSON.stringify(data)
+
+});
+
+const result = await res.json();
+
+if(result.number){
+    document.getElementById("invoice-no").value=result.number;
+}
+    method,
+
+    headers: {
+
+        "Content-Type": "application/json"
+
+    },
+
+    body: JSON.stringify(data)
+
+});
 
         const result = await res.json();
         document.getElementById("invoice-no").value = result.number;
@@ -893,7 +938,11 @@ document.getElementById("print-btn").innerText = "Reprint";
     
     
     
-    addRow(); // Add one initial row
+    if(!billId){
+
+    addRow();
+
+} // Add one initial row
 });
 
 async function showNextNumber() {
@@ -923,86 +972,90 @@ document.addEventListener('input', function(e) {
 });
 // call on page load
 
-    async function loadBill(id){
+    async function loadBill(id) {
 
-    try{
+    try {
 
-        const res =
-            await fetch(`/api/bill/${id}`);
+        const res = await fetch(`/api/bill/${id}`);
 
-        const bill =
-            await res.json();
+        const bill = await res.json();
 
-        document.getElementById("invoice-no").value =
-            bill.number;
+        console.log(bill);
 
-        document.getElementById("invoice-date").value =
-            bill.date;
+        // BASIC DETAILS
+        document.getElementById("invoice-no").value = bill.number;
+        document.getElementById("invoice-date").value = bill.date;
+        document.getElementById("farmer-name").value = bill.farmer;
+        document.getElementById("farmer-village").value = bill.village;
+        document.getElementById("buyer-name").value = bill.buyer;
+        document.getElementById("sau-name").value = bill.sauda || "";
 
-        document.getElementById("farmer-name").value =
-            bill.farmer;
+        const tbody = document.getElementById("item-list");
 
-        document.getElementById("farmer-village").value =
-            bill.village;
+        tbody.innerHTML = "";
 
-        document.getElementById("buyer-name").value =
-            bill.buyer;
+        bill.items.forEach((item,index)=>{
 
-        document.getElementById("sau-name").value =
-            bill.sauda || "";
+    addRow();
 
-        const tbody =
-            document.getElementById("item-list");
+    const row=
+        tbody.children[index];
 
-        tbody.innerHTML="";
+    row.querySelector(".item-type").value=item.type;
+    row.querySelector(".item-jaali").value=item.jaali;
+    row.querySelector(".item-kilo").value=item.kilo;
+    row.querySelector(".item-rate").value=item.rate;
+    row.querySelector(".item-amount").value=item.amount;
 
-        bill.items.forEach(item=>{
+});
 
-            window.addRow();
+        document.getElementById("total-jaali").value=
+bill.totalJaali;
 
-            const row =
-                tbody.lastElementChild;
+document.getElementById("total-amount").value=
+bill.totalAmount;
 
-            row.querySelector(".item-type").value =
-                item.type;
+document.getElementById("subtotal").value=
+bill.totalAmount;
 
-            row.querySelector(".item-jaali").value =
-                item.jaali;
+document.getElementById("commission").value=
+bill.commission;
 
-            row.querySelector(".item-kilo").value =
-                item.kilo;
+document.getElementById("expenses").value=
+bill.expenses;
 
-            row.querySelector(".item-rate").value =
-                item.rate;
+document.getElementById("final-amount").value=
+bill.finalAmount;
 
-            row.querySelector(".item-amount").value =
-                item.amount;
+        // LOAD SAVED TOTALS
+       
 
-        });
+        // VIEW MODE
+        if (!isEdit) {
 
-        window.calculateTotals();
+            document.querySelectorAll("input").forEach(input=>{
 
-        if(!isEdit){
+    input.readOnly=true;
 
-            document.querySelectorAll("input")
-            .forEach(i=>{
+});
 
-                if(i.id!=="invoice-no")
-                    i.readOnly=true;
+document.getElementById("print-btn").innerHTML="Print";
 
-            });
+document.getElementById("reset-btn").style.display="none";
 
-            document.getElementById("add-row-btn").style.display="none";
+document.getElementById("add-row-btn").style.display="none";
 
-            document.querySelectorAll(".delete-row-btn")
-            .forEach(btn=>btn.style.display="none");
+document.querySelectorAll(".delete-row-btn").forEach(btn=>{
 
-            document.getElementById("reset-btn").style.display="none";
+    btn.style.display="none";
+
+});
+
         }
 
     }
 
-    catch(err){
+    catch (err) {
 
         console.error(err);
 
@@ -1011,9 +1064,22 @@ document.addEventListener('input', function(e) {
     }
 
 }
+    
     if(billId){
 
     loadBill(billId);
+
+        if(isEdit){
+
+    document.querySelectorAll("input").forEach(input=>{
+
+        input.readOnly=false;
+
+    });
+
+    document.getElementById("invoice-no").readOnly=true;
+
+}
 
 }
 
