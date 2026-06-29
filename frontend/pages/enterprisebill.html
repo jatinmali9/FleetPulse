@@ -923,52 +923,91 @@ document.addEventListener('input', function(e) {
 });
 // call on page load
 
-    async function loadBill(id) {
+    async function loadBill(id){
 
-    try {
+    try{
 
-        const res = await fetch(`/api/bill/${id}`);
+        const res =
+            await fetch(`/api/bill/${id}`);
 
-        const bill = await res.json();
+        const bill =
+            await res.json();
 
-        // BASIC DETAILS
-        document.getElementById("invoice-no").value = bill.number;
-        document.getElementById("invoice-date").value = bill.date;
-        document.getElementById("farmer-name").value = bill.farmer;
-        document.getElementById("farmer-village").value = bill.village;
-        document.getElementById("buyer-name").value = bill.buyer;
+        document.getElementById("invoice-no").value =
+            bill.number;
 
-        if(document.getElementById("sau-name"))
-            document.getElementById("sau-name").value = bill.sauda || "";
+        document.getElementById("invoice-date").value =
+            bill.date;
 
-        // REMOVE DEFAULT ROWS
-        document.getElementById("item-list").innerHTML = "";
+        document.getElementById("farmer-name").value =
+            bill.farmer;
 
-        // ADD SAVED ITEMS
+        document.getElementById("farmer-village").value =
+            bill.village;
+
+        document.getElementById("buyer-name").value =
+            bill.buyer;
+
+        document.getElementById("sau-name").value =
+            bill.sauda || "";
+
+        const tbody =
+            document.getElementById("item-list");
+
+        tbody.innerHTML="";
+
         bill.items.forEach(item=>{
 
-            addRow();
+            window.addRow();
 
             const row =
-                document.querySelector("#item-list tr:last-child");
+                tbody.lastElementChild;
 
-            row.querySelector(".item-type").value = item.type;
-            row.querySelector(".item-jaali").value = item.jaali;
-            row.querySelector(".item-kilo").value = item.kilo;
-            row.querySelector(".item-rate").value = item.rate;
-            row.querySelector(".item-amount").value = item.amount;
+            row.querySelector(".item-type").value =
+                item.type;
+
+            row.querySelector(".item-jaali").value =
+                item.jaali;
+
+            row.querySelector(".item-kilo").value =
+                item.kilo;
+
+            row.querySelector(".item-rate").value =
+                item.rate;
+
+            row.querySelector(".item-amount").value =
+                item.amount;
 
         });
 
-        calculateTotals();
+        window.calculateTotals();
+
+        if(!isEdit){
+
+            document.querySelectorAll("input")
+            .forEach(i=>{
+
+                if(i.id!=="invoice-no")
+                    i.readOnly=true;
+
+            });
+
+            document.getElementById("add-row-btn").style.display="none";
+
+            document.querySelectorAll(".delete-row-btn")
+            .forEach(btn=>btn.style.display="none");
+
+            document.getElementById("reset-btn").style.display="none";
+        }
 
     }
 
     catch(err){
 
-        console.log(err);
+        console.error(err);
 
         alert("Unable to load bill");
+
     }
 
 }
