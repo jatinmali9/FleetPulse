@@ -16,7 +16,7 @@ const customerRoutes = require('./routes/customerRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const { protect } = require('./middleware/auth');
-
+const dashboardRoutes = require("./routes/dashboard");
 const app = express();
 
 // 🔥 connect DB
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 app.use(morgan('dev'));
-
+app.use("/api/dashboard", dashboardRoutes);
 const publicFrontendPaths = new Set(['/', '/index.html', '/sign-in.html', '/sign-up.html']);
 
 app.use((req, res, next) => {
